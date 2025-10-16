@@ -2,8 +2,8 @@ import React from "react";
 import RootNavigator from './src/navigation/RootNavigator';
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import colors from "../BuildConnect/src/constants/colors";
-
+import colors from "./src/constants/colors";
+import '@/global.css';
 
 export default function App() {
   return (
