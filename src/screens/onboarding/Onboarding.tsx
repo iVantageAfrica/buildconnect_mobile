@@ -1,9 +1,20 @@
-import PrimaryButton from "@/src/ui/components/Buttons";
 import type { NavigationProp } from "@react-navigation/native";
-import React, { useState } from "react";
-import { Dimensions, Image, Text, View } from "react-native";
+import React, { useState, useRef } from "react";
+import {
+  Dimensions,
+  Image,
+  ImageBackground,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import AppIntroSlider from "react-native-app-intro-slider";
-import  colors from '../../constants/colors';
+import {
+  OnboardingImage1,
+  OnboardingImage2,
+  OnboardingImage3,
+} from "@/src/constants/image";
+import { arrowleft, level1, level2, level3 } from "@/src/constants/icon";
 
 interface OnboardingScreenProps {
   navigation: NavigationProp<any>;
@@ -12,28 +23,31 @@ interface OnboardingScreenProps {
 const OnboardingScreen = ({ navigation }: OnboardingScreenProps) => {
   const { width } = Dimensions.get("window");
   const [activeIndex, setActiveIndex] = useState(0);
+  const sliderRef = useRef<AppIntroSlider>(null);
 
   const slides = [
     {
       key: "s1",
-      title: "Your Gateway to Seamless Financial Services",
+      title: "Find Your Dream Home With Us",
       description:
-        "Experience effortless access to all your financial needs, from saving to investing, in one place.",
-      image: require("./../../assets/images/landing1.png"),
+        "Discover your perfect home or investment property with ease.",
+      image: OnboardingImage1,
+      icon: level1,
     },
     {
       key: "s2",
-      title: "Achieve Your Financial Goals with Ease",
+      title: "Track Progress",
       description:
-        "Experience a seamless blend of savings, investments, and housing options.",
-      image: require("./../../assets/images/landing1.png"),
+        "Monitor milestones, payments, and media updates in one centralized dashboard",
+      image: OnboardingImage2,
+      icon: level2,
     },
     {
       key: "s3",
-      title:  `Save towards your equity with`,
-      description:
-        `With 5,000 properties, lets you buy from trusted developers and grow your savings.`,
-      image: require("./../../assets/images/landing1.png"),
+      title: `Let Find Your Dream Property`,
+      description: `Start your journey today and make your real estate dream`,
+      image: OnboardingImage3,
+      icon: level3,
     },
   ];
 
@@ -42,98 +56,77 @@ const OnboardingScreen = ({ navigation }: OnboardingScreenProps) => {
     title: string;
     description: string;
     image: any;
+    icon: any;
   }
 
+  const handleSkip = () => {
+    navigation.navigate("GetStarted"); 
+  };
+
+  const handleBack = (currentIndex: number) => {
+    if (currentIndex > 0) {
+      sliderRef.current?.goToSlide(currentIndex - 1);
+    }
+  };
+
+  const handleNext = (currentIndex: number) => {
+    if (currentIndex < slides.length - 1) {
+      sliderRef.current?.goToSlide(currentIndex + 1);
+    } else {
+      navigation.navigate("GetStarted"); 
+    }
+  };
+
   const RenderItem = ({ item, index }: { item: Slide; index: number }) => (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        paddingHorizontal: 8,
-        backgroundColor: colors.primary_color,
-      }}
-    >
-
-      <Image
-        source={item.image}
-        style={{ width: width * 0.85, height: 300, marginBottom: 24 }}
-        resizeMode="contain"
-      />
-
-      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-        {slides.map((_, i) => (
-          <View
-            key={i}
-            style={{
-              backgroundColor: i === activeIndex ? colors.primary_color : colors.text_secondary,
-              width: i === activeIndex ? 50 : 10,
-              height: 10,
-              borderRadius: 5,
-              marginHorizontal: 4,
-            }}
-          />
-        ))}
+    <ImageBackground source={item.image} className="flex-1 w-full h-full">
+      <View className="flex-row px-8 pt-4 justify-between">
+        {index > 0 ? (
+          <TouchableOpacity onPress={() => handleBack(index)}>
+     <Image 
+     source={arrowleft} 
+  resizeMode="contain"
+  style={{ width: 30, height: 30 }}
+/>
+          </TouchableOpacity>
+        ) : (
+          <View style={{ width: 40 }} />
+        )}
+        <TouchableOpacity onPress={handleSkip}>
+          <Text className="text-black text-xl">Skip</Text>
+        </TouchableOpacity>
       </View>
-     
-      <Text
-        style={{
-          fontSize: 22,
-          fontWeight: "bold",
-          color: colors.text_primary,
-          textAlign: "center",
-          marginTop: 16,
-        }}
-      >
-        {item.title}
-      </Text>
-      <Text
-        style={{
-          fontSize: 16,
-          color: colors.text_secondary,
-          textAlign: "center",
-          marginTop: 8,
-        }}
-      >
-        {item.description}
-      </Text>
-    </View>
+      <View className="flex-col justify-end h-full items-center pb-[70px] px-11">
+        <Text className="text-white font-work-sans-bold text-center text-3xl font-extrabold pb-4">
+          {item.title}
+        </Text>
+        <Text className="text-white font-work-sans text-center text-xl ">
+          {item.description}
+        </Text>
+        <TouchableOpacity className="pt-12" onPress={() => handleNext(index)}>
+          <Image
+            className="w-[150px] h-24"
+            source={item.icon}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+      </View>
+    </ImageBackground>
   );
 
   return (
-    <View style={{ flex: 1 }}>
+    <View className="flex-1">
       <AppIntroSlider
+        ref={sliderRef}
         data={slides}
-        renderItem={({ item, index }) => <RenderItem item={item} index={index} />}
+        renderItem={({ item, index }) => (
+          <RenderItem item={item} index={index} />
+        )}
         onSlideChange={setActiveIndex}
         showSkipButton={true}
         renderPagination={() => null}
         showNextButton={false}
         showDoneButton={false}
       />
-
-      <View
-        style={{
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: colors.color_white,
-          paddingVertical: 16
-        }}
-      >
-        <PrimaryButton
-          title="Sign In"
-          active={true}
-          onPress={() => navigation.navigate("SignIn")}
-          style={{ width: '90%', marginHorizontal: 8 }}
-        />
-        <PrimaryButton
-          title="Sign Up"
-          active={false}
-          onPress={() => navigation.navigate("SignUpScreen")}
-          style={{ width: '90%', marginHorizontal: 8, marginTop: 12 }}
-        />
-      </View>
     </View>
   );
 };
