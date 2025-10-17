@@ -83,7 +83,7 @@ const OnboardingScreen = ({ navigation }: OnboardingScreenProps) => {
         {index > 0 ? (
           <TouchableOpacity onPress={() => handleBack(index)}>
      <Image 
-  source={arrowleft} 
+     source={arrowleft} 
   resizeMode="contain"
   style={{ width: 30, height: 30 }}
 />
