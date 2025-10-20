@@ -5,6 +5,7 @@ import SplashScreen from '../screens/onboarding/SplashScreen';
 import SignInScreen from '../screens/auth/sign_in/signin';
 import ResetPasswordScreen from '../screens/auth/forgot_password/ResetPasswordScreen';
 import GetStarted from '../screens/onboarding/GetStarted';
+import SignUpScreen from '../screens/auth/sign_up/sign_up';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -24,7 +25,7 @@ export default function RootNavigator() {
       <Stack.Screen name="Onboarding" component={OnboardingScreen} />
       <Stack.Screen name="GetStarted" component={GetStarted} />
       <Stack.Screen name="SignIn" component={SignInScreen} />
-      <Stack.Screen name="SignUp" component={SignInScreen} />
+      <Stack.Screen name="SignUp" component={SignUpScreen} />
       <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
     </Stack.Navigator>
   );

@@ -1,155 +1,153 @@
-import PrimaryButton from '@/src/components/Button';
-import Spacer from '@/src/components/Spacer';
-import React, { useState } from "react";
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import colors from "../../../constants/colors";
-import strings from "../../../constants/strings";
+import { View, Text, Image, TouchableOpacity } from "react-native";
+import React from "react";
+import {
+  AppleImage,
+  BuildConnectImage,
+  GoggleImage,
+} from "@/src/constants/image";
+import { arrowleft } from "@/src/constants/icon";
+import FormInput from "@/src/components/Forms/Formnput";
+import PasswordInput from "@/src/components/Forms/PasswordInput";
+import GradientButton from "@/src/components/Buttons/GradientButton";
+import DividerWithText from "@/src/components/Divider";
+import ButtonWithIcon from "@/src/components/Buttons/ButtonWithIcon";
+import KeyboardAvoidingLayout from "@/src/components/KeyboardAvoidLayout";
+import AuthLink from "@/src/components/AuthLink";
+import { LoginInput, loginSchema } from "@/src/schemas/authschema";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from "@/src/core/hooks/useAuth";
 
+const signin = ({ navigation }: any) => {
+  const handleBack = () => {
+    navigation.replace("GetStarted");
+  };
 
-const handleLogin = {}
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginInput>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      emailAddress: "",
+      password: "",
+    },
+  });
+ 
+  const {loginMutation} = useAuth();
 
-const SignInScreen = () => {
+  const onSubmit = (data: LoginInput) => {
+   loginMutation.mutate(data);
+  };
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
-    const [secureText, setSecureText] = useState(true);
-
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            backgroundColor: colors.color_white,
-        },
-
-        alignCneter: {
-            justifyContent: "center",
-            alignItems: "center",
-            marginStart: 16,
-            marginEnd: 16
-        },
-
-        logo: {
-            width: 230,
-            height: 80,
-            resizeMode: 'contain',
-        },
-
-        title: {
-            fontSize: 24,
-            fontWeight: 'bold',
-            color: colors.text_title
-        },
-
-        bodyText: {
-            fontSize: 12,
-            fontWeight: 'normal',
-            color: colors.text_body
-        },
-
-        formText: {
-            fontSize: 16,
-            marginTop: 16,
-            fontWeight: "normal",
-            textAlign: "left",
-        },
-
-        alignStart: {
-            justifyContent: 'flex-start',
-            alignItems: 'flex-start',
-            marginStart: 16,
-            marginEnd: 16,
-            marginTop: 20
-        },
-
-        textInputStyle: {
-            height: 50,
-            width: "100%",
-            marginTop: 12,
-            paddingStart: 10,
-            fontSize: 16,
-            color: colors.text_body,
-            borderRadius: 10,
-            borderColor: colors.textOutlineColor,
-            borderWidth: 1
-        }
-
-    })
-
-    return (
-        <View style={styles.container}>
-
-            <Spacer height={80} />
-
-            <View style={styles.alignCneter}>
-                <Image source={require('../../../assets/images/app_logo_colored.png')} style={styles.logo} />
-
-                <Text style={styles.title}>{strings.welcome}</Text>
-
-                <Text style={{ fontSize: 18, fontWeight: 'normal', marginTop: 16 }}>
-                    {strings.signInToContinue}
-                </Text>
-            </View>
-
-            <View style={styles.alignStart}>
-
-                <Text style={styles.formText}>{strings.email}</Text>
-
-                <TextInput style={styles.textInputStyle} onChangeText={setEmail} value={email} />
-
-                <Text style={styles.formText}>{strings.password}</Text>
-
-                <View style={{ flexDirection: "row" }}>
-                    <TextInput style={styles.textInputStyle} value={password} onChangeText={setPassword} secureTextEntry={secureText} />
-
-                    <TouchableOpacity
-                        style={{ width: 24, height: 24, position: 'absolute', right: 16, top: 25 }} onPress={() => setSecureText(!secureText)} >
-
-                        <Image
-                            source={
-                                secureText
-                                    ? require("../../../assets/images/showPasswordIcon.png")
-                                    : require("../../../assets/images/hidePasswordIcon.png")
-                            }
-                            style={{ height: 24, width: 24 }}
-                        />
-                    </TouchableOpacity>
-                </View>
-            </View>
-
-            <View style={styles.alignCneter}>
-                <PrimaryButton title={strings.continue} onPress={() => handleLogin}
-                    backgroundColor={colors.primary_color} style={{ marginTop: 35, marginStart: 16, marginEnd: 16 }}
-                    textColor={colors.white} />
-
-                <Text style={{ fontSize: 16, color: colors.primary_color, marginTop: 16 }}>{strings.reset_password}</Text>
-            </View>
-
-            <View style={{ position: 'absolute', bottom: 20, width: "100%", alignItems: 'center', justifyContent: 'center' }}>
-                <View
-                    style={{
-                        width: "90%",
-                        height: 0.2,
-                        backgroundColor: colors.textOutlineColor,
-                        alignSelf: 'center'
-                    }}
-                />
-                <Text style={{ fontSize: 14, color: colors.text_body, marginTop: 16 }}>
-                    {strings.no_account_question}{" "}
-                    <Text
-                        style={{ color: colors.primary_color, fontWeight: "bold" }}
-                        onPress={() => {
-                            console.log("Clickable text pressed!");
-                            //navigation.navigate("SignUp")
-                        }}
-                    >
-                        {strings.signUp}
-                    </Text>
-                </Text>
-            </View>
+  return (
+    <KeyboardAvoidingLayout>
+      <View>
+        <TouchableOpacity className="pt-10 pl-4" onPress={() => handleBack()}>
+          <Image
+            source={arrowleft}
+            resizeMode="contain"
+            style={{ width: 25, height: 25 }}
+          />
+        </TouchableOpacity>
+        <View className="flex-row pt-8 justify-center">
+          <Image
+            className="w-[280px]"
+            source={BuildConnectImage}
+            resizeMode="contain"
+          />
         </View>
-    );
+        <View className="mx-4 space-y-4">
+          <View>
+            <Controller
+              control={control}
+              name="emailAddress"
+              render={({ field }) => (
+                <FormInput
+                  placeholder="Email"
+                  label="Email"
+                  width="w-full"
+                  value={field.value}
+                  hasError={!!errors.emailAddress}
+                  onChangeText={field.onChange}
+                />
+              )}
+            />
 
-}
+            {errors.emailAddress && (
+              <Text className="font-inter  pt-2" style={{ color: "red" }}>
+                {errors.emailAddress.message}
+              </Text>
+            )}
+          </View>
 
-export default SignInScreen;
+          <View>
+            <Controller
+              control={control}
+              name="password"
+              render={({ field }) => (
+                <PasswordInput
+                  placeholder="Password"
+                  label="Password"
+                  value={field.value}
+                  onChangeText={field.onChange}
+                  hasError={!!errors.password}
+                />
+              )}
+            />
+            <View className="flex-row gap-10">
 
+              {errors.password && (
+              <Text className="text-red-500 font-inter pt-2 text-sm">{errors.password.message}</Text>
+            )}
+
+            <Text className="text-primary font-inter text-right pt-2 ">
+              Forgot password?
+            </Text>
+            </View>
+            
+          </View>
+          <View className="pt-8">
+            <GradientButton loading={loginMutation.isPending} title="Continue" onPress={handleSubmit(onSubmit)} />
+          </View>
+
+          <View>
+            <DividerWithText text="or" />
+          </View>
+
+          <View className="">
+            <View className="pb-6">
+              <ButtonWithIcon
+                icon={AppleImage}
+                textColor="black"
+                title="Continue With Apple"
+                onPress={() => console.log("Pressed")}
+              />
+            </View>
+            <View>
+              <ButtonWithIcon
+                icon={GoggleImage}
+                textColor="black"
+                title="Continue With Google"
+                onPress={() => console.log("Pressed")}
+              />
+            </View>
+            <View className="mt-12">
+              <AuthLink
+                questionText="Dont have an account? "
+                linkText="Signup"
+                onPress={() => navigation.navigate("SignUp")}
+                className="justify-center "
+                questionClassName="text-black text-md"
+                linkClassName="text-primary "
+              />
+            </View>
+          </View>
+        </View>
+      </View>
+    </KeyboardAvoidingLayout>
+  );
+};
+
+export default signin;

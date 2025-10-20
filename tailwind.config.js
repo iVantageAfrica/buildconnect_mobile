@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const colors = require("./src/constants/colors");
 module.exports = {
-  // NOTE: Update this to include the paths to all files that contain Nativewind classes.
   content: [
     './app/**/*.{html,js,jsx,ts,tsx,mdx}',
     './components/**/*.{html,js,jsx,ts,tsx,mdx}',
@@ -11,13 +11,24 @@ module.exports = {
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
+      colors: {
+        primary: colors.primary_color,
+        white: colors.color_white,
+        text_primary: colors.text_primary,
+        text_secondary: colors.text_secondary,
+        text_title: colors.text_title,
+        text_body: colors.text_body,
+        black: colors.black,
+        textOutline: colors.textOutlineColor,
+      },
       fontFamily: {
         'work-sans': ['WorkSans_400Regular'],
-        'work-sans-medium': ['WorkSans_500Medium'],
-        'work-sans-semibold': ['WorkSans_600SemiBold'],
-        'work-sans-bold': ['WorkSans_700Bold'],
+        'worksansMedium': ['WorkSans_500Medium'],
+'worksansSemibold': ['WorkSans_600SemiBold'],
+'worksansBold': ['WorkSans_800ExtraBold'],
+          'inter': ['Inter_400Regular'],
       },
     },
   },
   plugins: [],
-}
+};

@@ -1,12 +1,18 @@
 import React, { useEffect } from 'react';
 import { View, Image, Text, ActivityIndicator } from 'react-native';
-import { useFonts, WorkSans_400Regular } from '@expo-google-fonts/work-sans';
+import { useFonts, WorkSans_400Regular, WorkSans_500Medium, WorkSans_600SemiBold, WorkSans_800ExtraBold} from '@expo-google-fonts/work-sans';
+import {  Inter_400Regular } from '@expo-google-fonts/inter';
 import colors from "../../constants/colors"
 import string from "../../constants/strings"
+import { SplashImage } from '@/src/constants/image';
 
 export default function SplashScreen({ navigation }: any) {
   const [fontsLoaded] = useFonts({
     WorkSans_400Regular,
+    Inter_400Regular,
+    WorkSans_500Medium, 
+    WorkSans_600SemiBold,
+    WorkSans_800ExtraBold
   });
 
   useEffect(() => {
@@ -22,9 +28,9 @@ export default function SplashScreen({ navigation }: any) {
 
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 16, backgroundColor: colors.primary_color }}>
+    <View className="flex-1 items-center justify-center p-16 bg-primary">
       <Image 
-        source={require('../../assets/images/splash-icon.png')}
+        source={SplashImage}
         style={{
           width: 300,
           height: 100
@@ -32,7 +38,7 @@ export default function SplashScreen({ navigation }: any) {
         resizeMode="contain"
       />
 
-      <Text style={{ 
+      <Text className="mt-1 text-white font-work-sans" style={{ 
         marginTop: 1, 
         color: colors.color_white,
         fontFamily: 'WorkSans_400Regular'

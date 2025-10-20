@@ -92,11 +92,11 @@ const OnboardingScreen = ({ navigation }: OnboardingScreenProps) => {
           <View style={{ width: 40 }} />
         )}
         <TouchableOpacity onPress={handleSkip}>
-          <Text className="text-black text-xl">Skip</Text>
+          <Text className="text-black font-inter text-xl">Skip</Text>
         </TouchableOpacity>
       </View>
       <View className="flex-col justify-end h-full items-center pb-[70px] px-11">
-        <Text className="text-white font-work-sans-bold text-center text-3xl font-extrabold pb-4">
+        <Text className="text-white font-worksansBold text-center text-3xl  pb-4">
           {item.title}
         </Text>
         <Text className="text-white font-work-sans text-center text-xl ">
