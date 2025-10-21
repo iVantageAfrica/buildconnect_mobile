@@ -9,6 +9,7 @@ const colors = {
     white: "#ffffff",
     black: "#000000",
     textOutlineColor: "#0D0D0D7A",
+    gradientColors:['#2463EB', '#183C89']
 }
 
 export default colors;
