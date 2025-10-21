@@ -122,7 +122,6 @@ const signin = ({ navigation }: any) => {
                 icon={AppleImage}
                 textColor="black"
                 title="Continue With Apple"
-                onPress={() => console.log("Pressed")}
               />
             </View>
             <View>
@@ -130,7 +129,6 @@ const signin = ({ navigation }: any) => {
                 icon={GoggleImage}
                 textColor="black"
                 title="Continue With Google"
-                onPress={() => console.log("Pressed")}
               />
             </View>
             <View className="mt-12">

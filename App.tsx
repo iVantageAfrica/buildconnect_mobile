@@ -8,6 +8,8 @@ import '@/global.css';
 
 import Toast from 'react-native-toast-message';
 import createToastConfig from "./src/components/Toast";
+import { useFonts, WorkSans_400Regular, WorkSans_500Medium, WorkSans_600SemiBold, WorkSans_800ExtraBold } from "@expo-google-fonts/work-sans";
+import { Inter_400Regular } from "@expo-google-fonts/inter";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +19,13 @@ const toastConfig = createToastConfig({
   });
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+      WorkSans_400Regular,
+      Inter_400Regular,
+      WorkSans_500Medium, 
+      WorkSans_600SemiBold,
+      WorkSans_800ExtraBold
+    });
   return (
     <SafeAreaProvider>
       <QueryClientProvider client={queryClient}>

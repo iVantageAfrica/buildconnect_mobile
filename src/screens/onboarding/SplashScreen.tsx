@@ -7,23 +7,16 @@ import string from "../../constants/strings"
 import { SplashImage } from '@/src/constants/image';
 
 export default function SplashScreen({ navigation }: any) {
-  const [fontsLoaded] = useFonts({
-    WorkSans_400Regular,
-    Inter_400Regular,
-    WorkSans_500Medium, 
-    WorkSans_600SemiBold,
-    WorkSans_800ExtraBold
-  });
+  
 
   useEffect(() => {
-    if (fontsLoaded) {
       const timeout = setTimeout(() => {
         navigation.replace('Onboarding');
       }, 2000);
 
       return () => clearTimeout(timeout);
-    }
-  }, [navigation, fontsLoaded]);
+  
+  }, [navigation]);
 
 
 
