@@ -5,26 +5,26 @@ interface FormInputProps {
   label: string;
   value: string;
   onChangeText: (text: string) => void;
+  onBlur?: () => void; 
   placeholder?: string;
   secureTextEntry?: boolean;
   keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad';
   hasError?: boolean;
-  width:string;
 }
 
 const FormInput: React.FC<FormInputProps> = ({
   label,
   value,
   onChangeText,
+  onBlur, 
   placeholder,
   secureTextEntry = false,
   keyboardType = 'default',
   hasError = false,
-  width='w-full'
 }) => {
   return (
-     <View className={`${width}`} >
-      <Text className="font-inter  text-black mt-4  text-left">
+    <View>
+      <Text className="font-inter text-black mt-4 text-left">
         {label}
       </Text>
       <TextInput
@@ -33,6 +33,7 @@ const FormInput: React.FC<FormInputProps> = ({
         }`}
         value={value}
         onChangeText={onChangeText}
+        onBlur={onBlur} 
         placeholder={placeholder}
         placeholderTextColor="#6B7280"
         secureTextEntry={secureTextEntry}
