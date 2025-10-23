@@ -8,11 +8,7 @@ import HidePasswordIcon from "../assets/icons/hidePasswordIcon.png";
 import BuildConnectImage from "../assets/images/BUILDCONNECT.png"
 import AppleImage from "../assets/images/prime_apple.png";
 import GoggleImage from "../assets/images/flat-color-icons_google.png";
-
-
-
-
-
+import BlueMark from "../assets/icons/bluemark.png";
 
 export {
     SplashImage,
@@ -25,6 +21,7 @@ export {
     BuildConnectImage,
     AppleImage,
     GoggleImage,
+    BlueMark,
 
 }
 

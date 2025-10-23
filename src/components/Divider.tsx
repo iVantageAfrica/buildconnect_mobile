@@ -31,7 +31,7 @@ const DividerWithText: React.FC<DividerWithTextProps> = ({
         }} 
       />
       
-      {/* Text */}
+
       <Text 
         className="mx-4 text-md font-inter text-black"
         style={{ 

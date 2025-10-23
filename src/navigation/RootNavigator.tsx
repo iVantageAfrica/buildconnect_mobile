@@ -6,6 +6,10 @@ import SignInScreen from '../screens/auth/sign_in/signin';
 import ResetPasswordScreen from '../screens/auth/forgot_password/ResetPasswordScreen';
 import GetStarted from '../screens/onboarding/GetStarted';
 import SignUpScreen from '../screens/auth/sign_up/sign_up';
+import ProfileScreen from '../screens/auth/profile_setup/profile';
+import ForgotPasswordScreen from '../screens/auth/forgot_password/ForgotPasswordScreen';
+import OTPFormScreen from '../screens/auth/forgot_password/OtpFormScreen';
+import ResetPasswordSucessScreen from '../screens/auth/forgot_password/ResetPasswordSucessScreen';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -14,6 +18,10 @@ export type RootStackParamList = {
   SignUp: undefined;
   ResetPassword: undefined;
   GetStarted:undefined;
+  Profile:undefined;
+  ForgotPassword:undefined;
+  OtpFormScreen:undefined;
+  ResetPasswordSucessScreen:undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -27,6 +35,10 @@ export default function RootNavigator() {
       <Stack.Screen name="SignIn" component={SignInScreen} />
       <Stack.Screen name="SignUp" component={SignUpScreen} />
       <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen}/>
+      <Stack.Screen name="OtpFormScreen" component={OTPFormScreen}/>
+      <Stack.Screen name="ResetPasswordSucessScreen" component={ResetPasswordSucessScreen}/>
     </Stack.Navigator>
   );
 }

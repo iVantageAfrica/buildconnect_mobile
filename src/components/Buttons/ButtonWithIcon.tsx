@@ -8,7 +8,7 @@ type ButtonProps = {
     textColor?: string;
     style?: ViewStyle | string;      
     textStyle?: TextStyle | string;
-    icon?: React.ReactNode | string; // Can be a component or image URI
+    icon?: React.ReactNode | string; 
     iconPosition?: "left" | "right";
     iconStyle?: ImageStyle | ViewStyle;
     iconSize?: number;
@@ -28,7 +28,7 @@ const ButtonWithIcon: React.FC<ButtonProps> = ({
     iconSize = 20,
     disabled = false,
 }) => {
-    // Render icon based on type (image URI or component)
+   
     const renderIcon = () => {
         if (!icon) return null;
 

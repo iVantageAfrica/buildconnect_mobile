@@ -23,6 +23,10 @@ const signin = ({ navigation }: any) => {
     navigation.replace("GetStarted");
   };
 
+   const forgotPassword = () => {
+    navigation.replace("ForgotPassword");
+  };
+
   const {
     control,
     handleSubmit,
@@ -67,7 +71,6 @@ const signin = ({ navigation }: any) => {
                 <FormInput
                   placeholder="Email"
                   label="Email"
-                  width="w-full"
                   value={field.value}
                   hasError={!!errors.emailAddress}
                   onChangeText={field.onChange}
@@ -76,7 +79,7 @@ const signin = ({ navigation }: any) => {
             />
 
             {errors.emailAddress && (
-              <Text className="font-inter  pt-2" style={{ color: "red" }}>
+              <Text className="font-inter text-xs  pt-2" style={{ color: "red" }}>
                 {errors.emailAddress.message}
               </Text>
             )}
@@ -96,15 +99,15 @@ const signin = ({ navigation }: any) => {
                 />
               )}
             />
-            <View className="flex-row gap-10">
+            <View className="flex-row gap-16">
 
               {errors.password && (
-              <Text className="text-red-500 font-inter pt-2 text-sm">{errors.password.message}</Text>
+              <Text className="text-red-500 font-inter pt-2 text-xs">{errors.password.message}</Text>
             )}
 
-            <Text className="text-primary font-inter text-right pt-2 ">
-              Forgot password?
-            </Text>
+            <TouchableOpacity onPress={forgotPassword} className="text-primary font-inter text-right  ">
+              <Text className="text-primary font-inter text-right pt-1 text-sm " >Forgot password?</Text>
+            </TouchableOpacity>
             </View>
             
           </View>
