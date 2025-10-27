@@ -3,10 +3,11 @@ import Axios, { AxiosInstance } from "axios";
 import * as SecureStore from "expo-secure-store";
 
 const axiosInstance: AxiosInstance = Axios.create({
-  baseURL: "https://d2jd9jr42ljaqn.cloudfront.net/v1/", 
+  baseURL: "https://api-buildconnect.ivantage.africa/v1",
   timeout: 60000,
 });
 
+// Request interceptor — attach token
 axiosInstance.interceptors.request.use(
   async (config) => {
     const tokenString = await SecureStore.getItemAsync("authToken");
@@ -16,9 +17,42 @@ axiosInstance.interceptors.request.use(
         config.headers.Authorization = `Bearer ${sessionObj.token}`;
       }
     }
+    console.log("➡️ Request:", {
+      url: config.url,
+      method: config.method,
+      headers: config.headers,
+      data: config.data,
+    });
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    console.log("❌ Request Error:", error);
+    return Promise.reject(error);
+  }
+);
+
+
+axiosInstance.interceptors.response.use(
+  (response) => {
+    console.log("✅ Response:", {
+      url: response.config.url,
+      status: response.status,
+      data: response.data,
+    });
+    return response;
+  },
+  (error) => {
+    if (error.response) {
+      console.log("❌ API Error:", {
+        url: error.config?.url,
+        status: error.response.status,
+        data: error.response.data,
+      });
+    } else {
+      console.log("❌ Network/Timeout Error:", error.message);
+    }
+    return Promise.reject(error);
+  }
 );
 
 export default axiosInstance;
