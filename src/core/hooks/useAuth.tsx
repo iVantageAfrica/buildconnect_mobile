@@ -6,11 +6,14 @@ import { Alert } from "react-native";
 import Toast from "react-native-toast-message";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/src/navigation/RootNavigator";
-
+import { useState } from "react";
 
 export const useAuth = () => {
+  const [resetSuccess, setResetSuccess] = useState(false);
+
   const { setAuthData } = useAuthStore();
-const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const loginMutation = useMutation({
     mutationFn: AuthService.login,
     onSuccess: (res: any) => {
@@ -25,7 +28,6 @@ const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>(
       }
     },
     onError: (error: any) => {
-      console.log(error);
       Toast.show({
         type: "error",
         text1: "Login Failed",
@@ -34,7 +36,7 @@ const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>(
     },
   });
 
-   const registerMutation = useMutation({
+  const registerMutation = useMutation({
     mutationFn: AuthService.register,
     onSuccess: (res: any) => {
       const registerData = res?.data;
@@ -48,17 +50,16 @@ const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>(
       }
     },
     onError: (error: any) => {
-      console.log(error);
       Toast.show({
         type: "error",
         text1: "Login Failed",
         text2: error instanceof Error ? error.message : "Invalid credentials",
       });
-      navigation.replace("Profile")
+      navigation.replace("Profile");
     },
   });
 
-   const forgotPassMutation = useMutation({
+  const forgotPassMutation = useMutation({
     mutationFn: AuthService.register,
     onSuccess: (res: any) => {
       const registerData = res?.data;
@@ -72,17 +73,16 @@ const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>(
       }
     },
     onError: (error: any) => {
-      console.log(error);
       Toast.show({
         type: "error",
         text1: "Failed to email",
         text2: error instanceof Error ? error.message : "Invalid credentials",
       });
-      navigation.replace("OtpFormScreen")
+      navigation.replace("OtpFormScreen");
     },
   });
 
-   const otpMutation = useMutation({
+  const otpMutation = useMutation({
     mutationFn: AuthService.register,
     onSuccess: (res: any) => {
       const registerData = res?.data;
@@ -96,17 +96,16 @@ const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>(
       }
     },
     onError: (error: any) => {
-      console.log(error);
       Toast.show({
         type: "error",
         text1: "Failed to email",
         text2: error instanceof Error ? error.message : "Invalid credentials",
       });
-      navigation.replace("ResetPassword")
+      navigation.replace("ResetPassword");
     },
   });
 
-    const ResetPasswordMutation = useMutation({
+  const ResetPasswordMutation = useMutation({
     mutationFn: AuthService.register,
     onSuccess: (res: any) => {
       const registerData = res?.data;
@@ -120,24 +119,21 @@ const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>(
       }
     },
     onError: (error: any) => {
-      console.log(error);
       Toast.show({
         type: "error",
         text1: "Failed to email",
         text2: error instanceof Error ? error.message : "Invalid credentials",
       });
-      navigation.replace("ResetPasswordSucessScreen")
+      setResetSuccess(true);
     },
   });
-
-  
 
   return {
     loginMutation,
     registerMutation,
-  forgotPassMutation,
+    forgotPassMutation,
     otpMutation,
-    ResetPasswordMutation
-
+    ResetPasswordMutation,
+    resetSuccess,
   };
 };

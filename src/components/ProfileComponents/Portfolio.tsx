@@ -5,34 +5,13 @@ import ImageUploadComponent from "../Forms/ImageForm";
 import { camera } from "@/src/constants/icon";
 import DropdownField from "../DropDown";
 import ChooseTypeForm from "../ChooseTypeForm";
+import { availableDayList, daysOfWeek, timeSlots } from "@/src/utils/data";
 
 const Portfolio = () => {
   const { control } = useFormContext();
   const { errors } = useFormState({ control });
 
-  const timeSlots = [];
-
-  for (let h = 0; h < 24; h++) {
-    const hour = h.toString().padStart(2, "0");
-    timeSlots.push({ label: `${hour}:00`, value: `${hour}:00` });
-  }
-const daysOfWeek = [
-  { id: 'mon', label: 'Monday', value: 'Monday' },
-  { id: 'tue', label: 'Tuesday', value: 'Tuesday' },
-  { id: 'wed', label: 'Wednesday', value: 'Wednesday' },
-  { id: 'thu', label: 'Thursday', value: 'Thursday' },
-  { id: 'fri', label: 'Friday', value: 'Friday' },
-  { id: 'sat', label: 'Saturday', value: 'Saturday' },
-  { id: 'sun', label: 'Sunday', value: 'Sunday' },
-];
-
-  const availableDayList = [
-    { label: "Available Immediately", value: "Available Immediately" },
-    { label: "Available in Week", value: "Available in Week" },
-    { label: "Available in 2 week", value: "Available in 2 week" },
-    { label: "Available in 1 month", value: "Available in 1 month" },
-    { label: "Currently Booked", value: "Currently Booked" },
-  ];
+ 
 
   return (
  

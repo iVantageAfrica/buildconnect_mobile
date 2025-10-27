@@ -25,7 +25,7 @@ export default function OTPFormScreen({ navigation }: any) {
 
   const { otpMutation } = useAuth();
   const onSubmit = (data: any) => {
-    console.log("✅ OTP Submitted:", data.otp);
+ 
       otpMutation.mutate(data);
   };
   const handleBack = () => {

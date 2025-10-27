@@ -56,16 +56,16 @@ export default function ProfileScreen() {
 
     if (valid) {
       setStep((prev) => prev + 1);
-      console.log(`✅ Step ${step} valid data:`, getValues());
+
     } else {
-      console.log(`❌ Step ${step} validation errors:`, formState.errors);
+
     }
   };
 
   const prevStep = () => setStep((prev) => prev - 1);
 
   const onSubmit = (data: FullProfileInput) => {
-    console.log("✅ Final submission:", data);
+
     setStep(5);
   };
 

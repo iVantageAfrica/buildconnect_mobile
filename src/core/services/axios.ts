@@ -31,7 +31,7 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// ✅ Response interceptor — log results
+
 axiosInstance.interceptors.response.use(
   (response) => {
     console.log("✅ Response:", {
