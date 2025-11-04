@@ -3,7 +3,7 @@ import React from "react";
 import { arrowleft } from "@/src/constants/icon";
 import FormInput from "@/src/components/Forms/Formnput";
 import GradientButton from "@/src/components/Buttons/GradientButton";
-import KeyboardAvoidingLayout from "@/src/components/KeyboardAvoidLayout";
+import KeyboardAvoidingLayout from "@/src/components/Layouts/KeyboardAvoidLayout";
 import { ForgotPasswordInput, forgotPasswordSchema, LoginInput, loginSchema } from "@/src/schemas/authschema";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

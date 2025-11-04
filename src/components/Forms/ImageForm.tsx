@@ -63,7 +63,7 @@ export default function ImageUploadComponent({
 
         return (
           <View className="">
-            <Text className="py-4 font-inter text-xl">{label}</Text>
+            <Text className="py-4 font-inter text-md">{label}</Text>
 
             {!isUploaded && !error && (
               <View className="w-full border-2 border-dashed border-gray-300 rounded-3xl py-6 items-center justify-center">

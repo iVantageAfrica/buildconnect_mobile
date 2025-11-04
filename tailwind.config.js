@@ -20,11 +20,12 @@ module.exports = {
         text_body: colors.text_body,
         black: colors.black,
         textOutline: colors.textOutlineColor,
+        dashboard:colors.dashboardColors
       },
       fontFamily: {
         'work-sans': ['WorkSans_400Regular'],
         'worksansMedium': ['WorkSans_500Medium'],
-'worksansSemibold': ['WorkSans_600SemiBold'],
+'worksanssemibold': ['WorkSans_600SemiBold'],
 'worksansBold': ['WorkSans_800ExtraBold'],
           'inter': ['Inter_400Regular'],
              'intersemibold': ['Inter_500Medium'],

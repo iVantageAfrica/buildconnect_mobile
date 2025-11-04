@@ -9,6 +9,14 @@ import BuildConnectImage from "../assets/images/BUILDCONNECT.png"
 import AppleImage from "../assets/images/prime_apple.png";
 import GoggleImage from "../assets/images/flat-color-icons_google.png";
 import BlueMark from "../assets/icons/bluemark.png";
+import AvatarImage from "../assets/images/av.png";
+import EmptyBackground from "../assets/images/emptybackground.png"
+import CustomSurvey from "../assets/images/Customersurveyform.png";
+import UserNotify from "../assets/images/usernotify.png";
+import PropertyImage from "../assets/images/property-image.png";
+import QuestionImage from "../assets/images/Mask group.png";
+import SampleImage from "../assets/images/building-sample1.png"
+import SampleImage21 from "../assets/images/sample21.png";
 
 export {
     SplashImage,
@@ -22,7 +30,14 @@ export {
     AppleImage,
     GoggleImage,
     BlueMark,
-
+    AvatarImage,
+    EmptyBackground,
+    CustomSurvey,
+    UserNotify,
+    PropertyImage,
+    QuestionImage,
+    SampleImage,
+    SampleImage21
 }
 
 
