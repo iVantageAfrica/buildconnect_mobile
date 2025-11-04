@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { View, TextInput, TextInputKeyPressEventData, NativeSyntheticEvent } from "react-native";
 
-// ✅ Define prop types
 interface OTPInputProps {
   length?: number;
   value?: string;

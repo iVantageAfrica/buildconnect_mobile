@@ -7,7 +7,7 @@ import OTPInput from "@/src/components/Forms/OtpInput";
 import { arrowleft } from "@/src/constants/icon";
 import { useAuth } from "@/src/core/hooks/useAuth";
 import GradientButton from "@/src/components/Buttons/GradientButton";
-import AuthLink from "@/src/components/AuthLink";
+import AuthLink from "@/src/components/Miscallaneous/AuthLink";
 
 const otpSchema = z.object({
   otp: z.string().min(4, "OTP must be 4 digits"),

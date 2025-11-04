@@ -3,16 +3,16 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import BasicInfo from "@/src/components/ProfileComponents/BasicInfo";
-import ProfessionalDocumentation from "@/src/components/ProfileComponents/ProfessionalDocumentation";
-import Services from "@/src/components/ProfileComponents/Services";
-import Portfolio from "@/src/components/ProfileComponents/Portfolio";
-import SuccessScreen from "@/src/components/ProfileComponents/ProfileSuccessScreen";
-import KeyboardAvoidingLayout from "@/src/components/KeyboardAvoidLayout";
+import BasicInfo from "@/src/components/PagesComponent/Auth/ProfileComponents/BasicInfo";
+import ProfessionalDocumentation from "@/src/components/PagesComponent/Auth/ProfileComponents/ProfessionalDocumentation";
+import Services from "@/src/components/PagesComponent/Auth/ProfileComponents/Services";
+import Portfolio from "@/src/components/PagesComponent/Auth/ProfileComponents/Portfolio";
+import SuccessScreen from "@/src/components/PagesComponent/Auth/ProfileComponents/ProfileSuccessScreen";
+import KeyboardAvoidingLayout from "@/src/components/Layouts/KeyboardAvoidLayout";
 import GradientButton from "@/src/components/Buttons/GradientButton";
 import { arrowleft } from "@/src/constants/icon";
 import { fullProfileSchema, FullProfileInput } from "@/src/schemas/authschema";
-import ProfileSuccessScreen from "@/src/components/ProfileComponents/ProfileSuccessScreen";
+import ProfileSuccessScreen from "@/src/components/PagesComponent/Auth/ProfileComponents/ProfileSuccessScreen";
 
 export default function ProfileScreen() {
   const [step, setStep] = useState(1);

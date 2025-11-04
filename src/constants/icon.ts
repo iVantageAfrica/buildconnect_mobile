@@ -7,8 +7,25 @@ import camera from "../assets/icons/camera.png";
 import markicon from "../assets/icons/markimage.png"
 import fileerror from "../assets/icons/fileerror.png"
 import reportImage from "../assets/icons//document-text.png"
-
-
+import notification from "../assets/icons/notification.png";
+import SearchIcon from "../assets/icons/search-normal.png";
+import SettingsIcon from "../assets/icons/settings.png"
+import AddCircle from "../assets/icons/add-circle.png";
+import Code from "../assets/icons/code.png";
+import Dollar from "../assets/icons/usd-coin-(usdc).png";
+import House from "../assets/icons/house-2.png";
+import Home from "../assets/icons/home.png";
+import Vector from "../assets/icons/Vector.png"
+import Question from "../assets/icons/message-question.png"
+import HeartIcon from "../assets/icons/heart.png";
+import LocationIcon from "../assets/icons/location.png"
+import ClockIcon from "../assets/icons/clock.png";
+import UserIcon from "../assets/icons/profile-2user.png"
+import ReportBlueIcon from "../assets/icons/document-text-blue.png"
+import DownloadIcon from "../assets/icons/material-symbols_download.png"
+import DollarCircle from "../assets/icons/dollar-circle.png";
+import MarkCircle from "../assets/icons/lets-icons_done-ring-round.png"
+import MarkEmoji from "../assets/icons/mark-emoji.png"
 
 export {
     level1,
@@ -18,5 +35,24 @@ export {
     camera,
     markicon,
     fileerror,
-    reportImage
+    reportImage,
+    notification,
+    SearchIcon,
+    SettingsIcon,
+    AddCircle,
+    Dollar,
+    Code,
+    House,
+    Vector,
+    Home,
+    Question,
+    HeartIcon,
+    LocationIcon,
+    ClockIcon,
+    UserIcon,
+    ReportBlueIcon,
+    DownloadIcon,
+    DollarCircle,
+    MarkCircle, 
+    MarkEmoji
 }

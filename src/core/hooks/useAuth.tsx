@@ -12,8 +12,10 @@ export const useAuth = () => {
   const [resetSuccess, setResetSuccess] = useState(false);
 
   const { setAuthData } = useAuthStore();
-  const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  //MUTATIONS
   const loginMutation = useMutation({
     mutationFn: AuthService.login,
     onSuccess: (res: any) => {
@@ -33,6 +35,10 @@ export const useAuth = () => {
         text1: "Login Failed",
         text2: error instanceof Error ? error.message : "Invalid credentials",
       });
+      const authToken = "hhhhh";
+        const refreshToken = 1233;
+       setAuthData(authToken, refreshToken);
+         navigation.replace("Dashboard");
     },
   });
 

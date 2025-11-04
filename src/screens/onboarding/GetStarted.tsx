@@ -2,7 +2,7 @@ import { View, Text, ImageBackground, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { GetStartedImage } from "@/src/constants/image";
 import PrimaryButton from "@/src/components/Buttons/Button";
-import AuthLink from "@/src/components/AuthLink";
+import AuthLink from "@/src/components/Miscallaneous/AuthLink";
 
 const GetStarted = ({ navigation }: any) => {
   const [selectedRole, setSelectedRole] = useState<string>("builder");

@@ -2,13 +2,14 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { arrowleft } from "@/src/constants/icon";
 import GradientButton from "@/src/components/Buttons/GradientButton";
-import KeyboardAvoidingLayout from "@/src/components/KeyboardAvoidLayout";
+import KeyboardAvoidingLayout from "@/src/components/Layouts/KeyboardAvoidLayout";
 import {ResetPasswordInput, resetPasswordSchema } from "@/src/schemas/authschema";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/src/core/hooks/useAuth";
 import PasswordInput from "@/src/components/Forms/PasswordInput";
-import SuccessScreen from "@/src/components/SucessScreen";
+import SuccessScreen from "@/src/components/Notifications/SucessScreen";
+
 
 const ResetPasswordScreen = ({ navigation }: any) => {
   const handleBack = () => {
