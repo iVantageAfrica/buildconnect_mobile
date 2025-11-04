@@ -8,7 +8,6 @@ import Toast from 'react-native-toast-message';
 import createToastConfig from "./src/components/Notifications/Toast";
 import "./global.css";
 
-import { useAuthStore } from "./src/store/Authstore";
 import FontLayout from "./src/components/Layouts/FontLayout";
 const queryClient = new QueryClient();
 
@@ -20,16 +19,12 @@ const toastConfig = createToastConfig({
 
 
 export default function App() {
-  const loadAuthData = useAuthStore((state) => state.loadAuthData);
-  useEffect(() => {
-    loadAuthData(); 
-  }, []);
 
   return (
     <SafeAreaProvider>
       <QueryClientProvider client={queryClient}>
         <FontLayout>
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#fcfcfd" }} edges={["top", "left", "right", "bottom"]}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: colors.text_primary}} edges={["top", "left", "right", "bottom"]}>
           <NavigationContainer>
             <RootNavigator />
           </NavigationContainer>
