@@ -19,12 +19,20 @@ import { useAuth } from "@/src/core/hooks/useAuth";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import colors from "@/src/constants/colors";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "@/src/navigation/RootNavigator";
 
-const SignUpScreen = ({ navigation }: any) => {
+type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, "SignUp">;
+
+const SignUpScreen = ({ navigation, route }: SignUpScreenProps) => {
+  const selectedRole = route.params?.selectedRole || "builder";
+ 
   const handleBack = () => {
     navigation.replace("GetStarted");
   };
 
+  console.log("selectedRole", selectedRole);
+  
   const {
     control,
     handleSubmit,
@@ -38,13 +46,21 @@ const SignUpScreen = ({ navigation }: any) => {
       mobileNumber: "",
       password: "",
       termsAccepted: false,
+      role: selectedRole.trim().toLowerCase() === "client" ? "client" : "builder",
     },
   });
 
   const { registerMutation } = useAuth();
 
   const onSubmit = (data: SignUpInput) => {
-    registerMutation.mutate(data);
+    registerMutation.mutate(data, {
+      onSuccess: () => {
+        navigation.replace("VerifyEmail", { 
+          email: data.email, 
+          role: data.role 
+        });
+      },
+    });
   };
 
   return (
@@ -68,7 +84,7 @@ const SignUpScreen = ({ navigation }: any) => {
 
         <View className="mt-6">
           <Text className="font-work-sans text-black text-center pb-6 text-3xl">
-            Sign up to find work
+            {selectedRole === "client" ? "Sign up to hire builder" : "Sign up to find work"}
           </Text>
 
         <View className="pb-4">
@@ -76,6 +92,7 @@ const SignUpScreen = ({ navigation }: any) => {
               icon={AppleImage}
               textColor="black"
               title="Continue With Apple"
+              onPress={() => {}}
             />
         </View>
 
@@ -84,6 +101,7 @@ const SignUpScreen = ({ navigation }: any) => {
               icon={GoggleImage}
               textColor="black"
               title="Continue With Google"
+              onPress={() => {}}
             />
         </View>
            
@@ -106,7 +124,7 @@ const SignUpScreen = ({ navigation }: any) => {
                 render={({ field }) => (
                   <FormInput
                     placeholder="Enter first name"
-                    label="First name"
+                    label="First Name"
                     value={field.value}
                     hasError={!!errors.firstName}
                     onChangeText={field.onChange}
@@ -127,7 +145,7 @@ const SignUpScreen = ({ navigation }: any) => {
                 render={({ field }) => (
                   <FormInput
                     placeholder="Enter last name"
-                    label="Last name"
+                    label="Last Name"
                     value={field.value}
                     hasError={!!errors.lastName}
                     onChangeText={field.onChange}
@@ -148,12 +166,13 @@ const SignUpScreen = ({ navigation }: any) => {
               name="email"
               render={({ field }) => (
                 <FormInput
-                  placeholder="Email"
-                  width="w-full"
+                  placeholder="user@gmail.com"
                   label="Email"
                   value={field.value}
                   hasError={!!errors.email}
-                  onChangeText={field.onChange}
+                  onChangeText={(text) => field.onChange(text.toLowerCase())}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
                 />
               )}
             />
@@ -169,11 +188,12 @@ const SignUpScreen = ({ navigation }: any) => {
               name="mobileNumber"
               render={({ field }) => (
                 <FormInput
-                  placeholder="Mobile number"
+                  placeholder="070**********"
                   label="Mobile Number"
                   value={field.value}
                   hasError={!!errors.mobileNumber}
                   onChangeText={field.onChange}
+                  keyboardType="numeric"
                 />
               )}
             />
@@ -190,7 +210,7 @@ const SignUpScreen = ({ navigation }: any) => {
               name="password"
               render={({ field }) => (
                 <PasswordInput
-                  placeholder="Password"
+                  placeholder="Password (8 or more characters)"
                   label="Password"
                   value={field.value}
                   onChangeText={field.onChange}

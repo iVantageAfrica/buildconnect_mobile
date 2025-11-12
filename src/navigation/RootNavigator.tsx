@@ -6,9 +6,12 @@ import SignInScreen from '../screens/auth/sign_in/signin';
 import ResetPasswordScreen from '../screens/auth/forgot_password/ResetPasswordScreen';
 import GetStarted from '../screens/onboarding/GetStarted';
 import SignUpScreen from '../screens/auth/sign_up/sign_up';
-import ProfileScreen from '../screens/auth/profile_setup/profile';
+import ProfileScreen from '../screens/auth/sign_up/builder/profile';
 import ForgotPasswordScreen from '../screens/auth/forgot_password/ForgotPasswordScreen';
 import OTPFormScreen from '../screens/auth/forgot_password/OtpFormScreen';
+import VerifyEmailScreen from '../screens/auth/sign_up/verify_email';
+import VerifyIdentityScreen from '../screens/auth/sign_up/client/verify_identity';
+import CreateProjectScreen from '../screens/auth/sign_up/client/create_project';
 import TabNavigator from './TabNavigator';
 import { useAuthStore } from '@/src/store/Authstore';
 import NotificationScreen from '../screens/builders/notification/notification';
@@ -23,7 +26,7 @@ export type RootStackParamList = {
   Splash: undefined;
   Onboarding: undefined;
   SignIn: undefined;
-  SignUp: undefined;
+  SignUp: { selectedRole?: string } | undefined;
   ResetPassword: undefined;
   GetStarted: undefined;
   Profile: undefined;
@@ -31,11 +34,14 @@ export type RootStackParamList = {
   OtpFormScreen: undefined;
   Dashboard: undefined;
   Notification: undefined;
-  FindProjects:undefined;
-  MyProjects:undefined;
-  ProjectDetails:undefined;
-  SubmitBid:undefined;
-  CreateProperty:undefined;
+  VerifyEmail: { email?: string; role?: string; fromLogin?: boolean } | undefined;
+  VerifyIdentity: undefined;
+  CreateProject: undefined;
+  FindProjects: undefined;
+  MyProjects: undefined;
+  ProjectDetails: undefined;
+  SubmitBid: undefined;
+  CreateProperty: undefined;
   ContractDetails: undefined;
 };
 
@@ -53,7 +59,7 @@ export default function RootNavigator() {
     loadAuth();
   }, []);
 
-  if (loading) return <SplashScreen/>; 
+  if (loading) return <SplashScreen />;
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -64,22 +70,28 @@ export default function RootNavigator() {
           <Stack.Screen name="GetStarted" component={GetStarted} />
           <Stack.Screen name="SignIn" component={SignInScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
+          <Stack.Screen name="VerifyEmail" component={VerifyEmailScreen} />
+          <Stack.Screen name="VerifyIdentity" component={VerifyIdentityScreen} />
+          <Stack.Screen name="CreateProject" component={CreateProjectScreen} />
           <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
           <Stack.Screen name="Profile" component={ProfileScreen} />
           <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
           <Stack.Screen name="OtpFormScreen" component={OTPFormScreen} />
-        
         </>
       ) : (
         <>
-            <Stack.Screen name="Dashboard" component={TabNavigator} />
-             <Stack.Screen name="Notification" component={NotificationScreen} />
-              <Stack.Screen name="FindProjects" component={FindprojectsScreen} />
-              <Stack.Screen name="MyProjects" component={MyprojectsScreen} />
-              <Stack.Screen name="ProjectDetails" component={ProjectDetailsScreen} />
-              <Stack.Screen name="SubmitBid" component={SubmitBidScreen} />
-              <Stack.Screen name="CreateProperty" component={CreateProperty} />
-               <Stack.Screen name="ContractDetails" component={Contractdetails} />
+          <Stack.Screen name="Dashboard" component={TabNavigator} />
+          <Stack.Screen name="VerifyEmail" component={VerifyEmailScreen} />
+          <Stack.Screen name="Profile" component={ProfileScreen} />
+          <Stack.Screen name="VerifyIdentity" component={VerifyIdentityScreen} />
+          <Stack.Screen name="CreateProject" component={CreateProjectScreen} />
+          <Stack.Screen name="Notification" component={NotificationScreen} />
+          <Stack.Screen name="FindProjects" component={FindprojectsScreen} />
+          <Stack.Screen name="MyProjects" component={MyprojectsScreen} />
+          <Stack.Screen name="ProjectDetails" component={ProjectDetailsScreen} />
+          <Stack.Screen name="SubmitBid" component={SubmitBidScreen} />
+          <Stack.Screen name="CreateProperty" component={CreateProperty} />
+          <Stack.Screen name="ContractDetails" component={Contractdetails} />
         </>
       )}
     </Stack.Navigator>

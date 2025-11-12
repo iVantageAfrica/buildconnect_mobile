@@ -12,9 +12,18 @@ axiosInstance.interceptors.request.use(
   async (config) => {
     const tokenString = await SecureStore.getItemAsync("authToken");
     if (tokenString) {
-      const sessionObj = JSON.parse(tokenString);
-      if (sessionObj?.token) {
-        config.headers.Authorization = `Bearer ${sessionObj.token}`;
+      try {
+        const parsedToken = JSON.parse(tokenString);
+        // Handle both formats: direct token string or object with token property
+        const authToken = typeof parsedToken === 'string' ? parsedToken : parsedToken?.token || parsedToken;
+        if (authToken) {
+          config.headers.Authorization = `Bearer ${authToken}`;
+        }
+      } catch (error) {
+        // If parsing fails, try using the raw string as token
+        if (tokenString) {
+          config.headers.Authorization = `Bearer ${tokenString}`;
+        }
       }
     }
     console.log("➡️ Request:", {

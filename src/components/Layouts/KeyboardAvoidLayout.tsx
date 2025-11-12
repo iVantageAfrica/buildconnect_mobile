@@ -83,8 +83,8 @@ const KeyboardAvoidingLayout: React.FC<KeyboardAvoidingLayoutProps> = ({
   });
 
   const bottomPadding = Platform.select({
-    ios: iosExtraPadding,
-    android: keyboardHeight > 0 ? keyboardHeight + androidExtraPadding : 100,
+    ios: keyboardHeight > 0 ? iosExtraPadding : 0,
+    android: keyboardHeight > 0 ? androidExtraPadding : 0,
   });
 
   return (
@@ -113,6 +113,7 @@ const KeyboardAvoidingLayout: React.FC<KeyboardAvoidingLayoutProps> = ({
         keyboardDismissMode="none"
         overScrollMode="always"
         contentInsetAdjustmentBehavior="automatic"
+        style={{ flex: 1 }}
       >
         <TouchableWithoutFeedback 
           onPress={Keyboard.dismiss}

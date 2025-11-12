@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const loginSchema = z.object({
-  emailAddress: z
+  email: z
     .string()
     .trim()
     .min(1, "Email is required")
@@ -34,7 +34,7 @@ export const resetPasswordSchema = z
 
 
 export const forgotPasswordSchema = z.object({
-  emailAddress: z
+  email: z
     .string()
     .trim()
     .min(1, "Email is required")
@@ -43,9 +43,15 @@ export const forgotPasswordSchema = z.object({
 });
 
 export const userSchema = z.object({
-  email: z.string().email("Invalid email format"),
+  email: z
+    .string()
+    .trim()
+    .min(1, "Email is required")
+    .email("Invalid email format")
+    .toLowerCase(),
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
+  role: z.enum(["builder", "client"]),
   password: z.string().min(8, "Password must be at least 8 characters long"),
   mobileNumber: z
     .string()

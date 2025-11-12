@@ -14,26 +14,25 @@ const ForgotPasswordScreen = ({ navigation }: any) => {
     navigation.replace("SignIn");
   };
 
-
-  const {
+const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<ForgotPasswordInput>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
-      emailAddress: "",
+      email: "",
     },
   });
- 
-  const {forgotPassMutation} = useAuth();
+
+  const { forgotPasswordMutation } = useAuth();
 
   const onSubmit = (data: ForgotPasswordInput) => {
-   forgotPassMutation.mutate(data);
+    forgotPasswordMutation.mutate(data);
   };
 
   return (
-    <KeyboardAvoidingLayout>
+   /*  <KeyboardAvoidingLayout> */
       <View>
         <TouchableOpacity className="pt-10 pl-4" onPress={() => handleBack()}>
           <Image
@@ -43,40 +42,44 @@ const ForgotPasswordScreen = ({ navigation }: any) => {
           />
         </TouchableOpacity>
         <View className="">
-          <Text className="font-interbold text-center text-3xl py-8">Forgot Your Password</Text>
-                    <Text className="font-inter text-center text-xl py-4">No worries! Enter the email address or phone number below</Text>
+          <Text className="font-interbold text-center text-3xl py-8 mx-4">Password Recovery</Text>
+          <Text className="font-inter text-center text-xl py-4">
+          Enter the email address or phone number associated with your BuildConnect account. 
+          </Text>
         </View>
-        <View className="mx-4 space-y-4 pt-10">
+        <View className="mx-4 space-y-4 pt-5">
           <View>
             <Controller
               control={control}
-              name="emailAddress"
+              name="email"
               render={({ field }) => (
                 <FormInput
                   placeholder="user@gmail.com"
                   label="Email"
                   value={field.value}
-                  hasError={!!errors.emailAddress}
+                  hasError={!!errors.email}
                   onChangeText={field.onChange}
                 />
               )}
             />
 
-            {errors.emailAddress && (
+            {errors.email && (
               <Text className="font-inter text-xs  pt-2" style={{ color: "red" }}>
-                {errors.emailAddress.message}
+                {errors.email.message}
               </Text>
             )}
           </View>
 
-          <View className="pt-8">
-            <GradientButton loading={forgotPassMutation.isPending} title="Continue" onPress={handleSubmit(onSubmit)} />
+          <View className="pt-20">
+            <GradientButton loading={forgotPasswordMutation.isPending}
+              title="Continue"
+              onPress={handleSubmit(onSubmit)} />
           </View>
 
-    
+
         </View>
       </View>
-    </KeyboardAvoidingLayout>
+   /*  </KeyboardAvoidingLayout> */
   );
 };
 

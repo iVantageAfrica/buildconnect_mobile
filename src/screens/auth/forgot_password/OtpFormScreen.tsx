@@ -23,19 +23,18 @@ export default function OTPFormScreen({ navigation }: any) {
     defaultValues: { otp: "" },
   });
 
-  const { otpMutation } = useAuth();
+  const { verifyOTPMutation } = useAuth();
   const onSubmit = (data: any) => {
- 
-      otpMutation.mutate(data);
+    verifyOTPMutation.mutate(data);
   };
   const handleBack = () => {
     navigation.replace("ForgotPassword");
   };
+
   const resendOtp = () => {
-    navigation.replace("ForgotPassword");
   };
 
- 
+
 
   return (
     <View className="mx-3">
@@ -72,22 +71,22 @@ export default function OTPFormScreen({ navigation }: any) {
 
       <View className="pt-8">
         <GradientButton
-          loading={otpMutation.isPending}
+          loading={verifyOTPMutation.isPending}
           title="Continue"
           onPress={handleSubmit(onSubmit)}
         />
       </View>
       <View className="pt-3">
-         <AuthLink
-        questionText="Didnt get  OTP? "
-        linkText="Resend OTP"
-        onPress={resendOtp}
-        className="justify-center "
-        questionClassName="text-black text-md"
-        linkClassName="text-primary font-interbold "
-      />
+        <AuthLink
+          questionText="Didnt get  OTP? "
+          linkText="Resend OTP"
+          onPress={resendOtp}
+          className="justify-center "
+          questionClassName="text-black text-md"
+          linkClassName="text-primary font-interbold "
+        />
       </View>
-     
+
     </View>
   );
 }

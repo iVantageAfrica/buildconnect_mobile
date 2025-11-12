@@ -5,6 +5,7 @@ import PropertiesScreen from "../screens/builders/properties/properties";
 import SettingsScreen from "../screens/builders/settings/settings";
 import { Image, View } from "react-native";
 import { Home, House, Question, Vector } from "../constants/icon";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Tab = createBottomTabNavigator();
 
@@ -36,7 +37,8 @@ const TabIcon = ({ focused, icon }) => (
 
 export default function TabNavigator() {
   return (
-    <Tab.Navigator
+    <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
+      <Tab.Navigator
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: true,
@@ -101,5 +103,6 @@ export default function TabNavigator() {
         }}
       />
     </Tab.Navigator>
+    </SafeAreaView>
   );
 }

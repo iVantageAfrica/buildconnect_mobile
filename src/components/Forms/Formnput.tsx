@@ -9,6 +9,7 @@ interface FormInputProps {
   placeholder?: string;
   secureTextEntry?: boolean;
   keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad';
+  autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
   hasError?: boolean;
 }
 
@@ -20,6 +21,7 @@ const FormInput: React.FC<FormInputProps> = ({
   placeholder,
   secureTextEntry = false,
   keyboardType = 'default',
+  autoCapitalize = 'sentences',
   hasError = false,
 }) => {
   return (
@@ -38,6 +40,7 @@ const FormInput: React.FC<FormInputProps> = ({
         placeholderTextColor="#6B7280"
         secureTextEntry={secureTextEntry}
         keyboardType={keyboardType}
+        autoCapitalize={autoCapitalize}
       />
     </View>
   );

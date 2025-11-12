@@ -1,5 +1,6 @@
 import React, { Children, ReactNode } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { arrowleft } from '@/src/constants/icon';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -18,8 +19,9 @@ const AppLayout: React.FC<AppLayoutProps> = ({  screenName, children}) => {
   };
 
   return (
-    <View className="flex-1 bg-gray-50">
-      <View className="bg-white z-10 border-b border-gray-300 py-6 px-2">
+    <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
+      <View className="flex-1 bg-gray-50">
+        <View className="bg-white z-10 border-b border-gray-300 py-6 px-2">
         <View className="flex-row items-center justify-center relative">
           <TouchableOpacity onPress={handleBack} className="absolute left-2">
             <Image
@@ -40,7 +42,8 @@ const AppLayout: React.FC<AppLayoutProps> = ({  screenName, children}) => {
       >
       {children}
       </ScrollView>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
