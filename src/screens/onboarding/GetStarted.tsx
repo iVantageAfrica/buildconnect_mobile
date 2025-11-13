@@ -5,9 +5,9 @@ import PrimaryButton from "@/src/components/Buttons/Button";
 import AuthLink from "@/src/components/Miscallaneous/AuthLink";
 
 const GetStarted = ({ navigation }: any) => {
-  const [selectedRole, setSelectedRole] = useState<string>("builder");
+  const [selectedRole, setSelectedRole] = useState<string>("client");
   const handleNavigation = () => {
-    navigation.navigate("SignUp");
+    navigation.navigate("SignUp", { selectedRole });
   };
   return (
     <View>
@@ -19,30 +19,26 @@ const GetStarted = ({ navigation }: any) => {
 
           <View className="flex-row bg-white/20 rounded-full p-1 w-full max-w-md mt-8">
             <TouchableOpacity
-              className={`flex-1 py-3.5 px-5 items-center justify-center rounded-full ${
-                selectedRole === "client" ? "bg-white" : ""
-              }`}
+              className={`flex-1 py-3.5 px-5 items-center justify-center rounded-full ${selectedRole === "client" ? "bg-white" : ""
+                }`}
               onPress={() => setSelectedRole("client")}
             >
               <Text
-                className={`text-base font-inter font-medium ${
-                  selectedRole === "client" ? "text-gray-800" : "text-white/70"
-                }`}
+                className={`text-base font-inter font-medium ${selectedRole === "client" ? "text-gray-800" : "text-white/70"
+                  }`}
               >
-                I'm a Clients
+                I'm a Client
               </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              className={`flex-1 py-3.5 px-5 items-center justify-center rounded-full ${
-                selectedRole === "builder" ? "bg-white" : ""
-              }`}
+              className={`flex-1 py-3.5 px-5 items-center justify-center rounded-full ${selectedRole === "builder" ? "bg-white" : ""
+                }`}
               onPress={() => setSelectedRole("builder")}
             >
               <Text
-                className={`text-base font-inter font-medium ${
-                  selectedRole === "builder" ? "text-gray-800" : "text-white/70"
-                }`}
+                className={`text-base font-inter font-medium ${selectedRole === "builder" ? "text-gray-800" : "text-white/70"
+                  }`}
               >
                 I'm a Builder
               </Text>
@@ -56,14 +52,14 @@ const GetStarted = ({ navigation }: any) => {
             title="Create account"
           />
 
-       <AuthLink
-  questionText="Already have an account?"
-  linkText="Login"
-  onPress={() => navigation.navigate("SignIn")}
-  className="justify-center mt-4"
-  questionClassName="text-gray-200 text-sm"
-  linkClassName="text-white  text-base"
- />
+          <AuthLink
+            questionText="Already have an account?"
+            linkText="Login"
+            onPress={() => navigation.navigate("SignIn")}
+            className="justify-center mt-4"
+            questionClassName="text-gray-200 text-sm"
+            linkClassName="text-white  text-base"
+          />
 
         </View>
       </ImageBackground>

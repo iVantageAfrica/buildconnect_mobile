@@ -1,26 +1,26 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import {fileerror, markicon } from '@/src/constants/icon';
+import { fileerror, markicon } from '@/src/constants/icon';
 import { Control, Controller } from 'react-hook-form';
 
 interface ImageUploadComponentProps {
   control: Control<any>;
   name: string;
   error?: string;
-  label:string;
-  image:string;
-  note:string;
-  title:string;
+  label: string;
+  image: string;
+  note: string;
+  title: string;
 }
 
-export default function ImageUploadComponent({ 
-  control, 
-  name, 
+export default function ImageUploadComponent({
+  control,
+  name,
   error,
   image,
   title,
-  note, 
+  note,
   label
 }: ImageUploadComponentProps) {
 
@@ -50,7 +50,7 @@ export default function ImageUploadComponent({
   };
 
   const handleReUpload = (onChange: (value: any) => void) => {
-    onChange(null); 
+    onChange(null);
   };
 
   return (
@@ -67,12 +67,12 @@ export default function ImageUploadComponent({
 
             {!isUploaded && !error && (
               <View className="w-full border-2 border-dashed border-gray-300 rounded-3xl py-6 items-center justify-center">
-                <Image className='w-10 h-10' source={image} resizeMode="contain"/>
-                
+                <Image className='w-10 h-10' source={image} resizeMode="contain" />
+
                 <Text className="text-md pt-4 font-inter text-gray-800 mb-2 text-center">
-                 {title}
+                  {title}
                 </Text>
-                
+
                 <Text className="text-gray-500 text-xl font-inter text-center mb-8">
                   {note}
                 </Text>
@@ -88,12 +88,12 @@ export default function ImageUploadComponent({
 
             {isUploaded && !error && (
               <View className="w-full border-2 border-dashed border-blue-400 rounded-3xl py-6 items-center bg-blue-50">
-                <Image className='w-10 h-10' source={markicon} resizeMode="contain"/>
-                
+                <Image className='w-10 h-10' source={markicon} resizeMode="contain" />
+
                 <Text className="text-xl font-semibold font-inter text-blue-600 mb-2">
                   Upload successful
                 </Text>
-                
+
                 <Text className="text-gray-600 text-center font-inter mb-8">
                   PNG, JPG, PDF (max. 800×400px)
                 </Text>
@@ -109,12 +109,12 @@ export default function ImageUploadComponent({
 
             {error && (
               <View className="w-full border-2 border-dashed border-red-400 rounded-3xl py-6 items-center bg-red-50">
-                <Image className='w-10 h-10' source={fileerror} resizeMode="contain"/>
-                
+                <Image className='w-10 h-10' source={fileerror} resizeMode="contain" />
+
                 <Text className="text-xl font-semibold font-inter text-red-600 mb-2">
                   Upload Failed
                 </Text>
-                
+
                 <Text className="text-red-600 text-center font-inter mb-8">
                   {error}
                 </Text>

@@ -30,8 +30,8 @@ const KeyboardAvoidingLayout: React.FC<KeyboardAvoidingLayoutProps> = ({
   showsVerticalScrollIndicator = false,
   contentContainerStyle,
   className = "flex-1",
-  androidExtraPadding = 40,
-  iosExtraPadding = 60,
+  androidExtraPadding = 10,
+  iosExtraPadding = 10,
 }) => {
   const scrollViewRef = useRef<ScrollView>(null);
   const [keyboardHeight, setKeyboardHeight] = useState(0);

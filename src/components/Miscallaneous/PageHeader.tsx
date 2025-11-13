@@ -30,7 +30,7 @@ const AuthHeader: React.FC<AuthHeaderProps> = ({
       {showBackButton && (
         <TouchableOpacity
           onPress={handleBack}
-          className="absolute left-0 z-10"
+          className="absolute left-0 z-5"
           style={{ paddingLeft: 16, paddingTop: 10 }}
         >
           <Image

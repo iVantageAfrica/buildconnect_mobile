@@ -8,6 +8,7 @@ const colors = {
     text_body: "#0D0D0DE0",
     white: "#ffffff",
     black: "#000000",
+    text_tertiary: "#737375",
     textOutlineColor: "#0D0D0D7A",
     gradientColors:['#2463EB', '#183C89'],
   dashboardColors: 'rgba(20, 56, 133, 1)',

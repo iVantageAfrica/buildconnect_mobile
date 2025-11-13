@@ -28,11 +28,15 @@ const {
   const { forgotPasswordMutation } = useAuth();
 
   const onSubmit = (data: ForgotPasswordInput) => {
-    forgotPasswordMutation.mutate(data);
+    forgotPasswordMutation.mutate(data, {
+      onSuccess: () => {
+        navigation.replace("OtpFormScreen", { email: data.email });
+      },
+    });
   };
 
   return (
-   /*  <KeyboardAvoidingLayout> */
+     <KeyboardAvoidingLayout> 
       <View>
         <TouchableOpacity className="pt-10 pl-4" onPress={() => handleBack()}>
           <Image
@@ -79,7 +83,7 @@ const {
 
         </View>
       </View>
-   /*  </KeyboardAvoidingLayout> */
+    </KeyboardAvoidingLayout>
   );
 };
 

@@ -8,14 +8,18 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/src/core/hooks/useAuth";
 import PasswordInput from "@/src/components/Forms/PasswordInput";
-import SuccessScreen from "@/src/components/Notifications/SucessScreen";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "@/src/navigation/RootNavigator";
 
+type ResetPasswordScreenProps = NativeStackScreenProps<RootStackParamList, "ResetPassword">;
 
-const ResetPasswordScreen = ({ navigation }: any) => {
+const ResetPasswordScreen = ({ navigation, route }: ResetPasswordScreenProps) => {
   const handleBack = () => {
     navigation.replace("SignIn");
   };
 
+  const email = route.params?.email || "";
+  const otp = route.params?.otp || "";
 
   const {
     control,
@@ -29,21 +33,16 @@ const ResetPasswordScreen = ({ navigation }: any) => {
     },
   });
  
-  const {ResetPasswordMutation, resetSuccess} = useAuth();
+  const {ResetPasswordMutation} = useAuth();
 
   const onSubmit = (data: ResetPasswordInput) => {
-   ResetPasswordMutation.mutate(data);
+    ResetPasswordMutation.mutate({
+      email,
+      otp,
+      newPassword: data.newPassword,
+      confirmNewPassword: data.confirmPassword,
+    });
   };
-if(resetSuccess){
-   return (
-      <SuccessScreen
-  title="Password Reset Successfully!"
-  message="Congratulations! Your Password Reset Is Successful. Log In With Your New Password And Continue Your Journey."
-  navigateTo="SignIn"
-  buttonTitle="Login"
- />
-  )
-}
   return (
     <KeyboardAvoidingLayout>
       <View>
