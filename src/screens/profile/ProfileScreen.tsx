@@ -1,0 +1,227 @@
+import React from "react";
+import { View, Text, ScrollView, TouchableOpacity, Image, Alert } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import AuthHeader from "@/src/components/Miscallaneous/PageHeader";
+import { AvatarImage } from "@/src/constants/image";
+import { useAuthStore } from "@/src/store/Authstore";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "@/src/navigation/RootNavigator";
+
+type ProfileScreenProps = NativeStackScreenProps<RootStackParamList, "Profile">;
+
+const ProfileScreen = ({ navigation }: ProfileScreenProps) => {
+  const { user, clearAuthData } = useAuthStore();
+  const fullName = user ? `${user.firstName} ${user.lastName}` : "User Name";
+  const email = user?.email || "user@example.com";
+
+  const handleEditProfile = () => {
+    navigation.navigate("EditProfile");
+  };
+
+  const handlePersonalInformation = () => {
+    navigation.navigate("EditProfile");
+  };
+
+  const handleAccountSettings = () => {
+    // Navigate to account settings
+    console.log("Account Settings");
+  };
+
+  const handleNotifications = () => {
+    // Navigate to notifications
+    console.log("Notifications");
+  };
+
+  const handleBack = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      navigation.navigate("Dashboard");
+    }
+  };
+
+  const handleLogout = () => {
+    Alert.alert(
+      "Logout",
+      "Are you sure you want to logout?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Logout",
+          style: "destructive",
+          onPress: async () => {
+            await clearAuthData();
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "SignIn" }],
+            });
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  return (
+    <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
+      <View className="flex-1 bg-white">
+        <AuthHeader title="Profile" onBackPress={handleBack} />
+
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 40 }}
+        >
+          {/* Profile Section */}
+          <View className="items-center pt-6 pb-8">
+            <View className="relative">
+              <Image
+                source={AvatarImage}
+                className="w-24 h-24 rounded-full"
+              />
+              <TouchableOpacity
+                onPress={handleEditProfile}
+                className="absolute bottom-0 right-0 bg-blue-600 rounded-full p-2 border-2 border-white"
+              >
+                <Image
+                  source={require("@/src/assets/icons/camera.png")}
+                  className="w-4 h-4"
+                  style={{ tintColor: "white" }}
+                />
+              </TouchableOpacity>
+            </View>
+            <Text className="font-interbold text-xl mt-4 text-gray-900">
+              {fullName}
+            </Text>
+            <Text className="font-inter text-base mt-1 text-gray-600">
+              {email}
+            </Text>
+          </View>
+
+          {/* Account Section */}
+          <View className="px-4 mt-4">
+            <Text className="font-interbold text-lg mb-4 text-gray-900">
+              Account
+            </Text>
+            <TouchableOpacity
+              onPress={handlePersonalInformation}
+              className="bg-white rounded-xl p-4 mb-3 border border-gray-200 flex-row items-center justify-between"
+            >
+              <View className="flex-row items-center flex-1">
+                <View className="w-10 h-10 bg-blue-50 rounded-full items-center justify-center mr-3">
+                  <Image
+                    source={require("@/src/assets/icons/profile-2user.png")}
+                    className="w-5 h-5"
+                    style={{ tintColor: "#3B82F6" }}
+                  />
+                </View>
+                <View className="flex-1">
+                  <Text className="font-interbold text-base text-gray-900">
+                    Personal Information
+                  </Text>
+                  <Text className="font-inter text-sm text-gray-600 mt-1">
+                    Edit your personal details
+                  </Text>
+                </View>
+              </View>
+              <Image
+                source={require("@/src/assets/icons/arrow-left.png")}
+                className="w-5 h-5"
+                style={{ tintColor: "#9CA3AF", transform: [{ rotate: "180deg" }] }}
+              />
+            </TouchableOpacity>
+          </View>
+
+          {/* Settings Section */}
+          <View className="px-4 mt-6">
+            <Text className="font-interbold text-lg mb-4 text-gray-900">
+              Settings
+            </Text>
+            <TouchableOpacity
+              onPress={handleAccountSettings}
+              className="bg-white rounded-xl p-4 mb-3 border border-gray-200 flex-row items-center justify-between"
+            >
+              <View className="flex-row items-center flex-1">
+                <View className="w-10 h-10 bg-blue-50 rounded-full items-center justify-center mr-3">
+                  <Image
+                    source={require("@/src/assets/icons/settings.png")}
+                    className="w-5 h-5"
+                    style={{ tintColor: "#3B82F6" }}
+                  />
+                </View>
+                <View className="flex-1">
+                  <Text className="font-interbold text-base text-gray-900">
+                    Account Settings
+                  </Text>
+                  <Text className="font-inter text-sm text-gray-600 mt-1">
+                    Adjust account preferences
+                  </Text>
+                </View>
+              </View>
+              <Image
+                source={require("@/src/assets/icons/arrow-left.png")}
+                className="w-5 h-5"
+                style={{ tintColor: "#9CA3AF", transform: [{ rotate: "180deg" }] }}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={handleNotifications}
+              className="bg-white rounded-xl p-4 mb-3 border border-gray-200 flex-row items-center justify-between"
+            >
+              <View className="flex-row items-center flex-1">
+                <View className="w-10 h-10 bg-blue-50 rounded-full items-center justify-center mr-3">
+                  <Image
+                    source={require("@/src/assets/icons/notification.png")}
+                    className="w-5 h-5"
+                    style={{ tintColor: "#3B82F6" }}
+                  />
+                </View>
+                <View className="flex-1">
+                  <Text className="font-interbold text-base text-gray-900">
+                    Notifications
+                  </Text>
+                  <Text className="font-inter text-sm text-gray-600 mt-1">
+                    Manage notifications
+                  </Text>
+                </View>
+              </View>
+              <Image
+                source={require("@/src/assets/icons/arrow-left.png")}
+                className="w-5 h-5"
+                style={{ tintColor: "#9CA3AF", transform: [{ rotate: "180deg" }] }}
+              />
+            </TouchableOpacity>
+          </View>
+
+          {/* Logout Section */}
+          <View className="px-4 mt-6">
+            <TouchableOpacity
+              onPress={handleLogout}
+              className="bg-white rounded-xl p-4 mb-3 border border-red-200 flex-row items-center justify-between"
+            >
+              <View className="flex-row items-center flex-1">
+                <View className="w-10 h-10 bg-red-50 rounded-full items-center justify-center mr-3">
+                  <Text className="text-red-600 text-xl font-bold">↪</Text>
+                </View>
+                <View className="flex-1">
+                  <Text className="font-interbold text-base text-red-600">
+                    Logout
+                  </Text>
+                  <Text className="font-inter text-sm text-gray-600 mt-1">
+                    Sign out of your account
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
+  );
+};
+
+export default ProfileScreen;
+
