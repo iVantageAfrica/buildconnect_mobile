@@ -144,8 +144,7 @@ const SignInScreen = ({ navigation }: SignInScreenProps) => {
               <AuthLink
                 questionText="Dont have an account? "
                 linkText="Signup"
-              /*   onPress={() => navigation.navigate("SignUp")} */
-                onPress={() => navigation.navigate("BuilderBasicInfo")}
+                onPress={() => navigation.navigate("SignUp")}
                 className="justify-center "
                 questionClassName="text-black text-md"
                 linkClassName="text-primary "

@@ -17,17 +17,14 @@ const ClientHome = ({ navigation }: any) => {
 
   const handleAddProject = () => {
     // Navigate to add project screen
-    console.log("Add Project pressed");
   };
 
   const handleEscrowAccount = () => {
     // Navigate to escrow account screen
-    console.log("Escrow Account pressed");
   };
 
   const handleSupport = () => {
     // Navigate to support screen
-    console.log("Support pressed");
   };
 
   return (
@@ -47,7 +44,7 @@ const ClientHome = ({ navigation }: any) => {
           {/* Search Bar with Filter */}
           <SearchBarWithFilter
             placeholder="Search..."
-            onFilterPress={() => console.log("Filter pressed")}
+            onFilterPress={() => {}}
           />
 
           {/* Promotional Banner */}

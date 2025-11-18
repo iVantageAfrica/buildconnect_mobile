@@ -30,8 +30,6 @@ const SignUpScreen = ({ navigation, route }: SignUpScreenProps) => {
   const handleBack = () => {
     navigation.replace("GetStarted");
   };
-
-  console.log("selectedRole", selectedRole);
   
   const {
     control,

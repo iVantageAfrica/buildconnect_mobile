@@ -24,12 +24,10 @@ const ProfileScreen = ({ navigation }: ProfileScreenProps) => {
 
   const handleAccountSettings = () => {
     // Navigate to account settings
-    console.log("Account Settings");
   };
 
   const handleNotifications = () => {
     // Navigate to notifications
-    console.log("Notifications");
   };
 
   const handleBack = () => {

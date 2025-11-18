@@ -28,14 +28,6 @@ const basicInfoSchema = z.object({
     .refine((val) => !!val, {
       message: "Profile photo is required",
     }),
-}).refine((data) => {
-  if (data.location && data.location.trim().length > 0) {
-    return data.serviceRadius && data.serviceRadius.trim().length > 0;
-  }
-  return true;
-}, {
-  message: "Service radius is required when location is provided",
-  path: ["serviceRadius"],
 });
 
 type BasicInfoInput = z.infer<typeof basicInfoSchema>;
@@ -71,17 +63,10 @@ export default function BasicInfoScreen({ navigation }: BasicInfoScreenProps) {
   };
 
   const handleContinue = async () => {
-    const fields: (keyof BasicInfoInput)[] = ["location", "yearOfExperience", "profilePhoto"];
+    const fields: (keyof BasicInfoInput)[] = ["location", "yearOfExperience", "profilePhoto", "serviceRadius"];
     const valid = await trigger(fields);
 
     if (valid) {
-      const location = getValues("location");
-      if (location && location.trim().length > 0) {
-        const serviceRadiusValid = await trigger("serviceRadius");
-        if (!serviceRadiusValid) {
-          return;
-        }
-      }
       onSubmit(getValues());
     }
   };

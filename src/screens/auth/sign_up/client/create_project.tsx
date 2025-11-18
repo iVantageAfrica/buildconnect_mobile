@@ -78,7 +78,6 @@ export default function CreateProjectScreen({
   });
 
   const onSubmit = (data: any) => {
-    console.log("Create Project Data:", data);
     navigation.replace("AccountSuccess");
   };
 

@@ -57,9 +57,6 @@ export default function PortfolioScreen({ navigation }: PortfolioScreenProps) {
     const allFormData = { ...formData, ...data };
     setFormData(allFormData);
     
-    // TODO: Submit to API here
-    console.log("Submitting profile:", allFormData);
-    
     // Clear form data after successful submission
     clearFormData();
     

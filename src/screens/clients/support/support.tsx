@@ -50,12 +50,10 @@ const SupportScreen = () => {
 
   const handleSubmitTicket = () => {
     // Navigate to submit ticket screen
-    console.log("Submit Ticket");
   };
 
   const handleMyTickets = () => {
     // Navigate to my tickets screen
-    console.log("My Tickets");
   };
 
   return (

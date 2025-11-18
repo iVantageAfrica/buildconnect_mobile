@@ -119,6 +119,11 @@ export default function RootNavigator() {
           <Stack.Screen name="SubmitBid" component={SubmitBidScreen} />
           <Stack.Screen name="CreateProperty" component={CreateProperty} />
           <Stack.Screen name="ContractDetails" component={Contractdetails} />
+          <Stack.Screen name="BuilderBasicInfo" component={BasicInfoScreen} />
+          <Stack.Screen name="BuilderProfessionalDocs" component={ProfessionalDocsScreen} />
+          <Stack.Screen name="BuilderServices" component={ServicesScreen} />
+          <Stack.Screen name="BuilderPortfolio" component={PortfolioScreen} />
+          <Stack.Screen name="BuilderProfileSuccess" component={ProfileSuccessScreen} />
         </>
       )}
     </Stack.Navigator>

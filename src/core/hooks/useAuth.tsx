@@ -22,8 +22,6 @@ export const useAuth = () => {
       ) {
         const { authToken, refreshToken, user } = loginData.data;  
 
-        console.log("user", user);
-
         if (user?.isVerified === false) {
           setAuthData(authToken, refreshToken, user);
           Toast.show({

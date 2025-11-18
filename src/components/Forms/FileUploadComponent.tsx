@@ -112,8 +112,6 @@ export default function FileUploadComponent({
           fileSizeInBytes = blob.size;
           const fileSizeInMB = fileSizeInBytes / (1024 * 1024);
 
-          console.log("Exact file size:", fileSizeInMB.toFixed(2), "MB");
-
           // Check file size
           if (fileSizeInMB > maxSizeMB) {
             const errorMsg = `File is too big (max ${maxSizeMB}MB)`;
@@ -123,7 +121,6 @@ export default function FileUploadComponent({
           }
         } catch (sizeError) {
           console.error("Error getting file size:", sizeError);
-          // Fallback: continue without size check if fetch fails
         }
 
         // Get proper mime type

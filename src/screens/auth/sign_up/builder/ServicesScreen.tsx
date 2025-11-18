@@ -10,6 +10,7 @@ import { arrowleft } from "@/src/constants/icon";
 import { z } from "zod";
 import Services from "./components/Services";
 import { useBuilderProfileStore } from "@/src/store/BuilderProfileStore";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type ServicesScreenProps = NativeStackScreenProps<RootStackParamList, "BuilderServices">;
 
@@ -21,6 +22,7 @@ type ServicesInput = z.infer<typeof servicesSchema>;
 
 export default function ServicesScreen({ navigation }: ServicesScreenProps) {
   const { formData, setFormData } = useBuilderProfileStore();
+  const insets = useSafeAreaInsets();
 
   const methods = useForm<ServicesInput>({
     resolver: zodResolver(servicesSchema),
@@ -52,26 +54,28 @@ export default function ServicesScreen({ navigation }: ServicesScreenProps) {
   return (
     <KeyboardAvoidingLayout androidExtraPadding={40}>
       <FormProvider {...methods}>
-        <View className="p-4 flex-1">
-          <View className="flex-row justify-between items-center mb-4">
-            <TouchableOpacity onPress={handleBack}>
-              <Image
-                source={arrowleft}
-                style={{ width: 25, height: 25 }}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-            <Text className="text-center font-interbold text-xl flex-1">
-              Services
-            </Text>
-            <View style={{ width: 25 }} />
+        <View className="p-4 flex-1 justify-between">
+          <View>
+            <View className="flex-row justify-between items-center mb-4">
+              <TouchableOpacity onPress={handleBack}>
+                <Image
+                  source={arrowleft}
+                  style={{ width: 25, height: 25 }}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+              <Text className="text-center font-interbold text-xl flex-1">
+                Services
+              </Text>
+              <View style={{ width: 25 }} />
+            </View>
+
+            <View className="pt-5">
+              <Services />
+            </View>
           </View>
 
-          <View className="pt-10 flex-1">
-            <Services />
-          </View>
-
-          <View className="pb-4 pt-6">
+          <View style={{ paddingTop: 24, paddingBottom: Math.max(insets.bottom, 16) }}>
             <GradientButton title="Continue" onPress={handleContinue} />
           </View>
         </View>

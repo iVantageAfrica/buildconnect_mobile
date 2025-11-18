@@ -9,10 +9,8 @@ import { camera } from "@/src/constants/icon";
 const BasicInfo = () => {
   const {
     control,
-    watch,
   } = useFormContext();
   const { errors } = useFormState({ control });
-  const location = watch("location");
   const serviceAreas = [
     { label: "5 miles", value: "5" },
     { label: "10 miles", value: "10" },
@@ -108,16 +106,14 @@ const BasicInfo = () => {
             error={errors.yearOfExperience?.message as string}
           />
 
-          {location && location.trim().length > 0 && (
-            <DropdownField
-              name="serviceRadius"
-              control={control}
-              label="Service Radius (miles)"
-              placeholder="Select service area"
-              data={serviceAreas}
-              error={errors.serviceRadius?.message as string}
-            />
-          )}
+          <DropdownField
+            name="serviceRadius"
+            control={control}
+            label="Service Radius (miles)"
+            placeholder="Select service area"
+            data={serviceAreas}
+            error={errors.serviceRadius?.message as string}
+          />
         </View>
       </View>
     </View>

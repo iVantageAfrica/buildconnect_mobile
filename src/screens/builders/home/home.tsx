@@ -42,7 +42,7 @@ const Home = ({ navigation }: any) => {
           {/* Search Bar with Filter */}
           <SearchBarWithFilter
             placeholder="Search..."
-            onFilterPress={() => console.log("Filter pressed")}
+            onFilterPress={() => {}}
           />
 
           {/* Welcome Section */}
@@ -79,7 +79,7 @@ const Home = ({ navigation }: any) => {
                   icon={Dollar}
                   title="My Wallet"
                   subtitle="Track your income"
-                  onPress={() => console.log('My Wallet pressed')}
+                  onPress={() =>  {}}
                 />
               </View>
               <View className="flex-1">
@@ -87,7 +87,7 @@ const Home = ({ navigation }: any) => {
                   icon={Code}
                   title="Portfolio"
                   subtitle="Showcase your work"
-                  onPress={() => console.log('Portfolio pressed')}
+                  onPress={() => {}}
                 />
               </View>
             </View>

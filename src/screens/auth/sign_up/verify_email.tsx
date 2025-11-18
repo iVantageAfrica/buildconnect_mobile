@@ -33,10 +33,6 @@ export default function VerifyEmailScreen({ navigation, route }: VerifyEmailScre
   const role = route.params?.role || "builder";
   const fromLogin = route.params?.fromLogin || false;
 
-  console.log("email", email);
-  console.log("role", role);
-  console.log("fromLogin", fromLogin);
-
   const onSubmit = (data: any) => {
     verifyOTPMutation.mutate({ email, otp: data.otp, role, fromLogin });
   };
