@@ -3,19 +3,29 @@ export interface LoginRequest {
   password: string;
 }
 
-export interface LoginResposeData {
-    authToken: AuthToken;
-    refreshToken: RefreshToken;
+export interface AuthResponseData {
+    code: string;
+    success: boolean;
+    statusCode: number;
+    message: string;
+    reqId: string;
+    data: { 
+        authToken: string;
+        refreshToken: string;
+        user: User;
+    }
 }
 
-export interface AuthToken {
-    expiresAt: string;
-    expiresIn: string;
-    token: string;
-}
-
-export interface RefreshToken {
-    expiresAt: string;
-    expiresIn: string;
-    token: string;
+export interface User {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    mobileNumber: string;
+    role: string;
+    verificationStatus: string;
+    isEmailVerified: boolean;
+    isVerified: boolean;
+    createdAt: string;
+    updatedAt: string;
 }

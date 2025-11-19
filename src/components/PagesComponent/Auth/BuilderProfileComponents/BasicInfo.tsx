@@ -9,8 +9,10 @@ import { camera } from "@/src/constants/icon";
 const BasicInfo = () => {
   const {
     control,
+    watch,
   } = useFormContext();
-const { errors } = useFormState({ control });
+  const { errors } = useFormState({ control });
+  const location = watch("location");
   const serviceAreas = [
     { label: "5 miles", value: "5" },
     { label: "10 miles", value: "10" },
@@ -32,21 +34,21 @@ const { errors } = useFormState({ control });
     <View className="flex-1">
       <View>
         <Text className="font-interbold text-2xl">Basic Profile</Text>
-        <Text className="font-inter text-base pt-2 text-md">
+        <Text className="font-inter text-base pt-2 text-md text-text_tertiary">
           Tell us about yourself and your business location
         </Text>
       </View>
 
-      <View className="pt-10">
+      <View className="pt-8">
         <Controller
           control={control}
           name="profilePhoto"
           render={() => (
             <ImageUploadComponent
-            title="Upload your professional photo"
-            image={camera}
-            label={"Profile Photo"}
-            note="Builders with photos get 3x more responses"
+              title="Upload your professional photo"
+              image={camera}
+              label={"Profile Photo"}
+              note="Builders with photos get 3x more responses"
               control={control}
               name="profilePhoto"
               error={errors.profilePhoto?.message as string | undefined}
@@ -98,22 +100,24 @@ const { errors } = useFormState({ control });
           </View>
 
           <DropdownField
-            name="serviceRadius"
-            control={control}
-            label="Service Radius (miles)"
-            placeholder="Select service area"
-            data={serviceAreas}
-            error={errors.serviceRadius?.message as string}
-          />
-
-          <DropdownField
             name="yearOfExperience"
             control={control}
             label="Years of Experience"
-            placeholder="Select experience level"
+            placeholder="Select years of experience"
             data={experienceYears}
             error={errors.yearOfExperience?.message as string}
           />
+
+          {location && location.trim().length > 0 && (
+            <DropdownField
+              name="serviceRadius"
+              control={control}
+              label="Service Radius (miles)"
+              placeholder="Select service area"
+              data={serviceAreas}
+              error={errors.serviceRadius?.message as string}
+            />
+          )}
         </View>
       </View>
     </View>

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const loginSchema = z.object({
-  emailAddress: z
+  email: z
     .string()
     .trim()
     .min(1, "Email is required")
@@ -12,8 +12,6 @@ export const loginSchema = z.object({
     .min(8, "Password must be at least 8 characters long")
     .max(64, "Password cannot exceed 64 characters"),
 });
-
-
 
 export const resetPasswordSchema = z
   .object({
@@ -34,7 +32,7 @@ export const resetPasswordSchema = z
 
 
 export const forgotPasswordSchema = z.object({
-  emailAddress: z
+  email: z
     .string()
     .trim()
     .min(1, "Email is required")
@@ -43,9 +41,15 @@ export const forgotPasswordSchema = z.object({
 });
 
 export const userSchema = z.object({
-  email: z.string().email("Invalid email format"),
+  email: z
+    .string()
+    .trim()
+    .min(1, "Email is required")
+    .email("Invalid email format")
+    .toLowerCase(),
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
+  role: z.enum(["builder", "client"]),
   password: z.string().min(8, "Password must be at least 8 characters long"),
   mobileNumber: z
     .string()
@@ -68,19 +72,21 @@ const fileSchema = z
   .nullable()
   .optional();
 
-export const fullProfileSchema = z.object({
-  businessName: z
-    .string()
-    .min(2, "Business name must be at least 2 characters")
-    .max(100, "Business name is too long"),
-    
-  location: z
-    .string()
-    .min(2, "Location must be at least 2 characters")
-    .max(100, "Location is too long"),
+export const fullProfileSchema = z
+  .object({
+    businessName: z
+      .string()
+      .max(100, "Business name is too long")
+      .optional()
+      .or(z.literal("")),
+      
+    location: z
+      .string()
+      .min(1, "City, state is required")
+      .max(100, "Location is too long"),
 
-  serviceRadius: z.string().min(1, "Service radius is required"),
-  yearOfExperience: z.string().min(1, "Years of experience is required"),
+    serviceRadius: z.string().optional(),
+    yearOfExperience: z.string().min(1, "Years of experience is required"),
 
   profilePhoto: fileSchema.refine((val) => !!val, {
     message: "Profile photo is required",
@@ -101,9 +107,19 @@ projectPhoto: fileSchema.refine((val) => !!val, {
   }),
 startTime: z.string().min(1, "Select start date"),
 endTime: z.string().min(1, "Select end date"),
-availableDays: z.array(z.string()).min(1, "Select available days"),
-availableTime: z.string().min(1, "Available time is required"),
-});
+  availableDays: z.array(z.string()).min(1, "Select available days"),
+  availableTime: z.string().min(1, "Available time is required"),
+  })
+  .refine((data) => {
+    // If location is provided, serviceRadius is required
+    if (data.location && data.location.trim().length > 0) {
+      return data.serviceRadius && data.serviceRadius.trim().length > 0;
+    }
+    return true;
+  }, {
+    message: "Service radius is required when location is provided",
+    path: ["serviceRadius"],
+  });
   
 export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;

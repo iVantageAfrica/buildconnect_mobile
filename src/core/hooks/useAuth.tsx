@@ -2,144 +2,252 @@ import { useAuthStore } from "@/src/store/Authstore";
 import { useNavigation } from "@react-navigation/native";
 import { AuthService } from "../services/auth/AuthService";
 import { useMutation } from "@tanstack/react-query";
-import { Alert } from "react-native";
 import Toast from "react-native-toast-message";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/src/navigation/RootNavigator";
-import { useState } from "react";
+import { AuthResponseData } from "../services/auth/authType";
 
 export const useAuth = () => {
-  const [resetSuccess, setResetSuccess] = useState(false);
-
   const { setAuthData } = useAuthStore();
-  
+
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  //MUTATIONS
   const loginMutation = useMutation({
     mutationFn: AuthService.login,
-    onSuccess: (res: any) => {
-      const loginData = res?.data;
+    onSuccess: (res) => {
+      const loginData: AuthResponseData = res?.data;
       if (
         (loginData.statusCode === 200 || loginData.statusCode === 201) &&
         loginData.success === true
       ) {
-        const { authToken, refreshToken } = loginData.data;
-        setAuthData(authToken, refreshToken);
-        Alert.alert("Login Sucessful");
+        const { authToken, refreshToken, user } = loginData.data;  
+
+        if (user?.isVerified === false) {
+          setAuthData(authToken, refreshToken, user);
+          Toast.show({
+            type: "info",
+            text1: "Email Verification Required",
+            text2: "Please verify your email to continue",
+          });
+          navigation.replace("VerifyEmail", {
+            email: user.email,
+            role: user.role,
+            fromLogin: true, 
+          }); 
+        } else {
+          setAuthData(authToken, refreshToken, user);
+          Toast.show({
+            type: "success",
+            text1: "Login Successful",
+            text2: "",
+          });
+          navigation.navigate("Dashboard");
+        }
+      } else {
+        Toast.show({
+          type: "error",
+          text1: "Login Failed",
+          text2: loginData?.message || "Invalid credentials. Please try again.",
+        });
       }
     },
     onError: (error: any) => {
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message || "Invalid credentials. Please try again.";
       Toast.show({
         type: "error",
         text1: "Login Failed",
-        text2: error instanceof Error ? error.message : "Invalid credentials",
+        text2: errorMessage,
       });
-      const authToken = "hhhhh";
-        const refreshToken = 1233;
-       setAuthData(authToken, refreshToken);
-         navigation.replace("Dashboard");
     },
   });
 
   const registerMutation = useMutation({
     mutationFn: AuthService.register,
-    onSuccess: (res: any) => {
-      const registerData = res?.data;
+    onSuccess: (res) => {
+      const registerData: AuthResponseData = res.data;
       if (
         (registerData.statusCode === 200 || registerData.statusCode === 201) &&
         registerData.success === true
       ) {
-        const { authToken, refreshToken } = registerData.data;
-        setAuthData(authToken, refreshToken);
-        Alert.alert("Login Sucessful");
+        // Save auth tokens and user data after successful signup
+        const { authToken, refreshToken, user } = registerData.data;
+        if (authToken && refreshToken) {
+          setAuthData(authToken, refreshToken, user);
+        }
+        
+        Toast.show({
+          type: "success",
+          text1: "Signup Successful",
+          text2: "Please verify your email to continue",
+        });
+        navigation.navigate("VerifyEmail", { 
+          email: registerData.data?.user?.email, 
+          role: registerData.data?.user?.role });
+      } else {
+        Toast.show({
+          type: "error",
+          text1: "Signup Failed",
+          text2: registerData.message || "Registration failed. Please try again.",
+        });
+      }
+    },
+    onError: (error: any) => {
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Registration failed. Please try again.";
+      Toast.show({
+        type: "error",
+        text1: "Signup Failed",
+        text2: errorMessage,
+      });
+    },
+  });
+
+  const forgotPasswordMutation = useMutation({
+    mutationFn: AuthService.forgotPassword,
+    onSuccess: (res: any) => {
+      const forgotPasswordData = res?.data;
+      if (
+        (forgotPasswordData.statusCode === 200 || forgotPasswordData.statusCode === 201) &&
+        forgotPasswordData.success === true
+      ) {
+        Toast.show({
+          type: "success",
+          text1: "Email Sent",
+          text2: "Please check your email for the reset password link",
+        });
       }
     },
     onError: (error: any) => {
       Toast.show({
         type: "error",
-        text1: "Login Failed",
-        text2: error instanceof Error ? error.message : "Invalid credentials",
+        text1: "An error occurred",
+        text2: error instanceof Error ? error.message : "Invalid email address",
       });
-      navigation.replace("Profile");
     },
   });
 
-  const forgotPassMutation = useMutation({
-    mutationFn: AuthService.register,
+  const verifyOTPMutation = useMutation({
+    mutationFn: (data: { email: string; otp: string; role?: string; fromLogin?: boolean }) => {
+      return AuthService.verifyOTP({ email: data.email, otp: data.otp });
+    },
+    onSuccess: (res: any, variables: { email: string; otp: string; role?: string; fromLogin?: boolean }) => {
+      const responseData = res?.data;
+      if (res?.status === 200) {
+        Toast.show({
+          type: "success",
+          text1: "Email Verified",
+          text2: responseData?.message || "Your email has been verified successfully",
+        });
+        
+        const role = variables?.role;
+        const fromLogin = variables?.fromLogin;
+
+        if (role !== undefined || fromLogin !== undefined) {
+          // If coming from login, navigate to Dashboard
+          if (fromLogin) {
+            navigation.replace("Dashboard");
+          } else {
+            // Navigate based on role for new signups
+            if (role === "client") {
+              navigation.replace("VerifyIdentity");
+            } else {
+              navigation.replace("BuilderBasicInfo");
+            }
+          }
+        }
+      } else {
+        Toast.show({
+          type: "error",
+          text1: "Verification Failed",
+          text2: responseData?.data?.message || "Invalid OTP. Please try again.",
+        });
+      }
+    },
+    onError: (error: any) => {
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Verification failed. Please try again.";
+      Toast.show({
+        type: "error",
+        text1: "Verification Failed",
+        text2: errorMessage,
+      });
+    },
+  });
+
+  const resendOtpMutation = useMutation({
+    mutationFn: AuthService.resendOtp,
     onSuccess: (res: any) => {
-      const registerData = res?.data;
-      if (
-        (registerData.statusCode === 200 || registerData.statusCode === 201) &&
-        registerData.success === true
-      ) {
-        const { authToken, refreshToken } = registerData.data;
-        setAuthData(authToken, refreshToken);
-        Alert.alert("Login Sucessful");
+      const responseData = res?.data;
+      if (res?.status === 200) {
+        Toast.show({
+          type: "success",
+          text1: "OTP Sent",
+          text2: responseData.message || "OTP sent successfully",
+        });
+      } else {
+        Toast.show({
+          type: "error",
+          text1: "Failed to send OTP",
+          text2: responseData?.message || "Failed to send OTP. Please try again.",
+        });
       }
     },
     onError: (error: any) => {
       Toast.show({
         type: "error",
-        text1: "Failed to email",
-        text2: error instanceof Error ? error.message : "Invalid credentials",
+        text1: "Failed to send OTP",
+        text2: error instanceof Error ? error.message : "Failed to send OTP. Please try again.",
       });
-      navigation.replace("OtpFormScreen");
     },
   });
-
-  const otpMutation = useMutation({
-    mutationFn: AuthService.register,
-    onSuccess: (res: any) => {
-      const registerData = res?.data;
-      if (
-        (registerData.statusCode === 200 || registerData.statusCode === 201) &&
-        registerData.success === true
-      ) {
-        const { authToken, refreshToken } = registerData.data;
-        setAuthData(authToken, refreshToken);
-        Alert.alert("Login Sucessful");
-      }
-    },
-    onError: (error: any) => {
-      Toast.show({
-        type: "error",
-        text1: "Failed to email",
-        text2: error instanceof Error ? error.message : "Invalid credentials",
-      });
-      navigation.replace("ResetPassword");
-    },
-  });
-
+  
   const ResetPasswordMutation = useMutation({
-    mutationFn: AuthService.register,
+    mutationFn: AuthService.resetPassword,
     onSuccess: (res: any) => {
-      const registerData = res?.data;
+      const resetPasswordData = res?.data;
       if (
-        (registerData.statusCode === 200 || registerData.statusCode === 201) &&
-        registerData.success === true
+        (resetPasswordData.statusCode === 200 || resetPasswordData.statusCode === 201) &&
+        resetPasswordData.success === true
       ) {
-        const { authToken, refreshToken } = registerData.data;
-        setAuthData(authToken, refreshToken);
-        Alert.alert("Login Sucessful");
+        Toast.show({
+          type: "success",
+          text1: "Password Reset Successful",
+          text2: resetPasswordData?.message || "Your password has been reset successfully",
+        });
+        navigation.replace("SignIn");
+      } else {
+        Toast.show({
+          type: "error",
+          text1: "Reset Failed",
+          text2: resetPasswordData?.message || "Failed to reset password. Please try again.",
+        });
       }
     },
     onError: (error: any) => {
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Failed to reset password. Please try again.";
       Toast.show({
         type: "error",
-        text1: "Failed to email",
-        text2: error instanceof Error ? error.message : "Invalid credentials",
+        text1: "Reset Failed",
+        text2: errorMessage,
       });
-      setResetSuccess(true);
     },
   });
 
   return {
     loginMutation,
     registerMutation,
-    forgotPassMutation,
-    otpMutation,
+    forgotPasswordMutation,
+    verifyOTPMutation,
+    resendOtpMutation,
     ResetPasswordMutation,
-    resetSuccess,
   };
 };
