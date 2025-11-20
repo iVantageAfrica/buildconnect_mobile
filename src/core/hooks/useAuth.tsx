@@ -24,6 +24,7 @@ export const useAuth = () => {
 
         if (user?.isVerified === false) {
           setAuthData(authToken, refreshToken, user);
+          
           Toast.show({
             type: "info",
             text1: "Email Verification Required",

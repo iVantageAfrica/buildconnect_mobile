@@ -26,6 +26,13 @@ import DownloadIcon from "../assets/icons/material-symbols_download.png"
 import DollarCircle from "../assets/icons/dollar-circle.png";
 import MarkCircle from "../assets/icons/lets-icons_done-ring-round.png"
 import MarkEmoji from "../assets/icons/mark-emoji.png"
+import SupportIcon from "../assets/images/support-icon.png";
+import PlusIcon from "../assets/icons/plus-icon.png";
+import BankIcon from "../assets/icons/emojione_bank.png"
+import BathroomIcon from "../assets/icons/bathroom.png"
+import SquareMeter from "../assets/icons/squaremeter.png";
+import BedrooomIcon from "../assets/icons/bedroom.png"
+
 
 export {
     level1,
@@ -54,5 +61,11 @@ export {
     DownloadIcon,
     DollarCircle,
     MarkCircle, 
-    MarkEmoji
+    MarkEmoji,
+    SupportIcon,
+    PlusIcon,
+    BankIcon,
+    BedrooomIcon, 
+    BathroomIcon,
+    SquareMeter
 }

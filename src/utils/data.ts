@@ -46,7 +46,12 @@ export  const availableDayList = [
     { id: '4', label: '4', value: '4' },
     { id: '5', label: '5', value: '5' },
   ]
+   export const budget =  [
+    { id: '1', label: 'Under 1 millions', value: 'Under 1 millions' },
+    { id: '2', label: '1-5 millions', value: '1-5 millions' },
+    { id: '3', label: '5-10 millions', value: '5-10 millions' },
 
+  ]
 
   //FAKE DATA 
 
@@ -105,3 +110,6 @@ export const PROJECTS = [
     ],
   },
 ];
+
+
+

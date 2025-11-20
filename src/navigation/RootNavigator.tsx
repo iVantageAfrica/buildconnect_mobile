@@ -30,6 +30,7 @@ import ProjectDetailsScreen from '../screens/builders/projectdetails/projectdeta
 import SubmitBidScreen from '../screens/builders/submitbid/submitbid';
 import CreateProperty from '../screens/builders/createproperty/createproperty';
 import Contractdetails from '../screens/builders/contractdetails/contractdetails';
+import AddProject from '../screens/clients/addprojects/addproject';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -61,6 +62,7 @@ export type RootStackParamList = {
   SubmitBid: undefined;
   CreateProperty: undefined;
   ContractDetails: undefined;
+  AddProject:undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -103,6 +105,7 @@ export default function RootNavigator() {
         </>
       ) : (
         <>
+        
           <Stack.Screen name="Dashboard" component={TabNavigator} />
           <Stack.Screen name="VerifyEmail" component={VerifyEmailScreen} />
           <Stack.Screen name="Profile" component={ProfileScreen} />
@@ -124,6 +127,7 @@ export default function RootNavigator() {
           <Stack.Screen name="BuilderServices" component={ServicesScreen} />
           <Stack.Screen name="BuilderPortfolio" component={PortfolioScreen} />
           <Stack.Screen name="BuilderProfileSuccess" component={ProfileSuccessScreen} />
+          <Stack.Screen name="AddProject" component={AddProject}/>
         </>
       )}
     </Stack.Navigator>

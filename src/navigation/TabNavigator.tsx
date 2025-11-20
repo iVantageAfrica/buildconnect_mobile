@@ -47,7 +47,8 @@ export default function TabNavigator() {
   const isClient = role === "client";
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
+    
+
       <Tab.Navigator
         screenOptions={{
           headerShown: false,
@@ -126,6 +127,6 @@ export default function TabNavigator() {
           />
         )}
       </Tab.Navigator>
-    </SafeAreaView>
+
   );
 }
