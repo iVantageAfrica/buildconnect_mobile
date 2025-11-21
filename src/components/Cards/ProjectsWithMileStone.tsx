@@ -14,6 +14,7 @@ interface ProjectsComponentProps {
   budget: string;
   duration: string;
   bids: string;
+  role:string;
   onPress?: () => void;
   heartIcon?: ImageSourcePropType;
   locationIcon?: ImageSourcePropType;
@@ -22,12 +23,12 @@ interface ProjectsComponentProps {
 }
 
 const ProjectsWithMilestone: React.FC<ProjectsComponentProps> = ({
-  postedTime,
+
   projectName,
   location,
   description,
   budget,
-  duration,
+  role,
   onPress,
   heartIcon = HeartIcon,
   locationIcon = LocationIcon,
@@ -50,40 +51,46 @@ const ProjectsWithMilestone: React.FC<ProjectsComponentProps> = ({
           <Image source={locationIcon} style={{ width: 15, height: 15 }} resizeMode="contain" />
           <Text className="font-inter">{location}</Text>
         </View>
-
-         <View className="flex-row items-center mt-4 gap-2">
-            <View className="flex-1">
-              <InfoCard
-                icon={DollarCircle}
-                title={budget}
-                subtitle="Total Budget"
-                subtitleColor="black"
-               touchable={false}
-               titleColor={"black"}
-              />
-            </View>
-            <View className="flex-1">
-              <InfoCard
-                icon={MarkCircle}
-                title="#218,800"
-                subtitle="Earned"
-                subtitleColor="black"
-               touchable={false}
-               titleColor={"black"}
-              />
-            </View>
-          </View>
+{role == "client" ? (
+  "" 
+) : (
+  <View>
+    <View className="flex-row items-center mt-4 gap-2">
+      <View className="flex-1">
+        <InfoCard
+          icon={DollarCircle}
+          title={budget}
+          subtitle="Total Budget"
+          subtitleColor="black"
+          touchable={false}
+          titleColor={"black"}
+        />
+      </View>
+      <View className="flex-1">
+        <InfoCard
+          icon={MarkCircle}
+          title="#218,800"
+          subtitle="Earned"
+          subtitleColor="black"
+          touchable={false}
+          titleColor={"black"}
+        />
+      </View>
+    </View>
 
     <View className="flex-row justify-between">
-        <View>
-            <Text className="font-inter">Next Milestone</Text>
-              <Text className="font-inter">Electrical</Text>
-               <Text className="pt-6 font-inter">Due: 23/04/2025</Text>
-        </View>
-        <View className="pt-14">
+      <View>
+        <Text className="font-inter">Next Milestone</Text>
+        <Text className="font-inter">Electrical</Text>
+        <Text className="pt-6 font-inter">Due: 23/04/2025</Text>
+      </View>
+      <View className="pt-14">
         <StatusBar title={"Approved"}/>
-        </View>
+      </View>
     </View>
+  </View>
+)}
+        
 
       </View>
     </TouchableOpacity>

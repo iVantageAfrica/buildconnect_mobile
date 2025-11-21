@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import RootNavigator from './src/navigation/RootNavigator';
 import { NavigationContainer } from "@react-navigation/native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { View } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import colors from "./src/constants/colors";
 import Toast from 'react-native-toast-message';
@@ -18,18 +17,19 @@ const toastConfig = createToastConfig({
 });
 
 
+
 export default function App() {
 
   return (
     <SafeAreaProvider>
       <QueryClientProvider client={queryClient}>
         <FontLayout>
-        <View style={{ flex: 1, backgroundColor: colors.text_primary }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: colors.text_secondary}} edges={["top", "left", "right", "bottom"]}>
           <NavigationContainer>
             <RootNavigator />
           </NavigationContainer>
           <Toast config={toastConfig} />
-        </View>
+        </SafeAreaView>
         </FontLayout>
       </QueryClientProvider>
     </SafeAreaProvider>

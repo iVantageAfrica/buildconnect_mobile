@@ -19,7 +19,6 @@ const AppLayout: React.FC<AppLayoutProps> = ({  screenName, children}) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
       <View className="flex-1 bg-gray-50">
         <View className="bg-white z-10 border-b border-gray-300 py-6 px-2">
         <View className="flex-row items-center justify-center relative">
@@ -43,7 +42,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({  screenName, children}) => {
       {children}
       </ScrollView>
       </View>
-    </SafeAreaView>
+
   );
 };
 

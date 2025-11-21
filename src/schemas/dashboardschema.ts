@@ -95,8 +95,56 @@ export const addPropertySchema = z.object({
 }),
 });
 
+export const addProjectSchema = z.object({
+    projectName: z
+    .string()
+    .trim()
+    .min(1, "Project name is required"),
+
+    projectType: z
+    .string()
+    .trim()
+    .min(1, "Proposed type is required"),
+       location: z
+    .string()
+    .trim()
+    .min(1, "Location is required"),
+  budget: z
+    .string()
+    .trim()
+    .min(1, "Budget is required"),
+
+    startDate: z.string().min(1, "Select start date"),
+    endDate: z.string().min(1, "Select end date"),
+  description: z
+    .string()
+    .trim()
+    .min(1, "Description is required"),
+
+  milestones: z
+    .array(
+      z.object({
+        milestoneName: z
+          .string()
+          .trim()
+          .min(1, "Milestone name is required"),
+        completionDate: z
+          .string()
+          .min(1, "Completion date is required"),
+        paymentAmount: z
+          .number()
+          .positive("Payment amount must be greater than 0"),
+      })
+    )
+    .min(1, "At least one milestone is required"),
+  
+  projectMedia: fileSchema.refine((val) => !!val, {
+  message: "projectMedia is required",
+}),
+});
+
 
 export type SubmitBidInput = z.infer<typeof submitBidSchema>;
-
+export type AddProjectInput = z.infer<typeof addProjectSchema>;
 export type AddPropertyInput = z.infer<typeof addPropertySchema>;
 
