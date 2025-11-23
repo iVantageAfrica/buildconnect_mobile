@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   FlatList,
   ListRenderItemInfo,
+  TouchableOpacity,
 } from "react-native";
-import { Check } from "lucide-react-native";
+import { Check, ChevronDown } from "lucide-react-native";
 
 interface TimelineItem {
   id: number;
@@ -27,16 +28,16 @@ const StatusIcon: React.FC<{ status: TimelineItem["status"] }> = ({ status }) =>
   switch (status) {
     case "completed":
       return (
-        <View className="w-10 h-10 rounded-full bg-blue-600 items-center justify-center">
-          <Check width={20} height={20} color="#fff" strokeWidth={3} />
+        <View className="w-12 h-12 rounded-full bg-blue-600 items-center justify-center">
+          <Check width={24} height={24} color="#fff" strokeWidth={3} />
         </View>
       );
 
     case "current":
-      return <View className="w-10 h-10 rounded-full border-4 border-blue-600 bg-white" />;
+      return <View className="w-12 h-12 rounded-full border-[6px] border-blue-600 bg-white" />;
 
     default:
-      return <View className="w-10 h-10 rounded-full border-2 border-gray-300 bg-white" />;
+      return <View className="w-12 h-12 rounded-full border-2 border-gray-300 bg-white" />;
   }
 };
 
@@ -53,34 +54,44 @@ interface RowProps {
 }
 
 const Row: React.FC<RowProps> = ({ item, index, nextStatus }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <View className="relative">
-      <View className="flex-row items-start gap-4 px-4 py-3">
-        <View className="w-12 items-center">
+      <View className="flex-row items-start gap-4">
+        <View className="w-12 items-center relative">
           <StatusIcon status={item.status} />
+          {index < timelineData.length - 1 && (
+            <View className={`w-0.5 h-20 mt-1 ${getLineColor(item.status, nextStatus)}`} />
+          )}
         </View>
 
-        <View className="flex-1 pr-2">
-          <Text className="text-lg font-inter text-gray-900">{item.title}</Text>
-          <Text className="text-sm font-inter mt-1">Target: {item.target}</Text>
+        <View className="flex-1 pt-2">
+          <TouchableOpacity 
+            className="flex-row items-center gap-2" 
+            onPress={() => setIsOpen(!isOpen)}
+            activeOpacity={0.7}
+          >
+            <Text className="text-xl font-semibold text-gray-900">{item.title}</Text>
+            <ChevronDown 
+              width={20} 
+              height={20} 
+              color="#6b7280"
+              style={{ transform: [{ rotate: isOpen ? "180deg" : "0deg" }] }}
+            />
+          </TouchableOpacity>
+          <Text className="text-sm text-gray-500 mt-1">Target: {item.target}</Text>
         </View>
       </View>
-
-      {index < timelineData.length - 1 && (
-        <View
-          className={`${getLineColor(item.status, nextStatus)} absolute left-11 top-16 w-0.5`}
-          style={{ height: 64 }}
-        />
-      )}
     </View>
   );
 };
 
 const ProjectTimeline: React.FC = () => {
   return (
-    <View className="flex-1 bg-gray-100 p-4">
-      <View className="bg-white rounded-lg shadow-sm p-4">
-        <Text className="text-2xl font-interbold mb-4">Project Timeline</Text>
+    <View className="flex-1 bg-gray-100 p-4 justify-center">
+      <View className="bg-white rounded-2xl p-6">
+        <Text className="text-xl font-bold text-gray-900 mb-8">Project Milestones</Text>
 
         <FlatList
           data={timelineData}
@@ -93,7 +104,6 @@ const ProjectTimeline: React.FC = () => {
               nextStatus={timelineData[index + 1]?.status}
             />
           )}
-          contentContainerStyle={{ paddingBottom: 20 }}
         />
       </View>
     </View>

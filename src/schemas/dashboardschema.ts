@@ -142,9 +142,17 @@ export const addProjectSchema = z.object({
   message: "projectMedia is required",
 }),
 });
+export const ratingSchema = z.object({
 
+  comment: z
+    .string()
+    .trim()
+    .min(1, "Comment is required"),
+  
+});
 
 export type SubmitBidInput = z.infer<typeof submitBidSchema>;
+export type RatingInput = z.infer<typeof ratingSchema>;
 export type AddProjectInput = z.infer<typeof addProjectSchema>;
 export type AddPropertyInput = z.infer<typeof addPropertySchema>;
 

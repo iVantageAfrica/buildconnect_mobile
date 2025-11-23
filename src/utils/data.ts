@@ -6,6 +6,8 @@ import { PropertyImage } from "../constants/image";
     const hour = h.toString().padStart(2, "0");
     timeSlots.push({ label: `${hour}:00`, value: `${hour}:00` });
   }
+
+  
 export const daysOfWeek = [
   { id: 'mon', label: 'Monday', value: 'Monday' },
   { id: 'tue', label: 'Tuesday', value: 'Tuesday' },

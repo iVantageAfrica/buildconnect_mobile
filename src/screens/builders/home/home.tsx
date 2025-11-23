@@ -3,11 +3,15 @@ import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import InfoCard from '@/src/components/Cards/InfoCard';
 import SearchBarWithFilter from '@/src/components/PagesComponent/Dashboard/Shared/SearchBarWithFilter';
 import DashboardHeader from '@/src/components/PagesComponent/Dashboard/Shared/DashboardHeader';
-import AvailableProjects from '@/src/components/PagesComponent/Dashboard/HomeComponents/AvailableProjects';
+
 import { AddCircle, Code, Dollar } from '@/src/constants/icon';
-import Bids from '@/src/components/PagesComponent/Dashboard/HomeComponents/MyBids';
-import MyProperties from '@/src/components/PagesComponent/Dashboard/HomeComponents/Properties';
+
 import { useAuthStore } from '@/src/store/Authstore';
+
+
+import MyProperties from '@/src/components/PagesComponent/Dashboard/Builders/HomeComponents/Properties';
+import Bids from '@/src/components/PagesComponent/Dashboard/Builders/ProjectsComponent/Bids';
+import AvailableProjects from '@/src/components/PagesComponent/Dashboard/Builders/HomeComponents/AvailableProjects';
 
 const Home = ({ navigation }: any) => {
   const { clearAuthData, user } = useAuthStore();

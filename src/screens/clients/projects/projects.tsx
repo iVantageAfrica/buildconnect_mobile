@@ -64,7 +64,7 @@ const ClientProjectsScreen = ({ navigation }: any) => {
              role="client"
               bids={project.bids}
               onPress={() =>
-                navigation.navigate('ProjectDetails', { projectId: project.id })
+                navigation.navigate('ClientProjectDetails', { projectId: project.id })
               }
             />
           ))}

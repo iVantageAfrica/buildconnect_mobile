@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import ProgressBar from '../../../Miscallaneous/ProgressBar'
-import ProjectTimeline from '../../../Cards/ProjectTimeline'
+import ProgressBar from '../../../../Miscallaneous/ProgressBar'
+import ProjectTimeline from '../../../../Cards/ProjectTimeline'
 
 const Overview = () => {
   return (

@@ -1,12 +1,12 @@
 
 import AppLayout from '@/src/components/Layouts/AppLayout'
-import Bids from '@/src/components/PagesComponent/Dashboard/Builders/ProjectsComponent/Bids'
-import Overview from '@/src/components/PagesComponent/Dashboard/Builders/ProjectsComponent/Overview'
+import Bids from '@/src/components/PagesComponent/Dashboard/Client/ProjectsComponent/Bids'
+import Overview from '@/src/components/PagesComponent/Dashboard/Client/ProjectsComponent/Overview'
 import React, { useState } from 'react'
 import { View, Text, Pressable, ScrollView } from 'react-native'
 
 
-const Projects = () => {
+const ClientProjectDetails = () => {
   const [activeTab, setActiveTab] = useState('Overview')
 
   const tabs = [
@@ -55,4 +55,4 @@ const Projects = () => {
   )
 }
 
-export default Projects
+export default ClientProjectDetails
