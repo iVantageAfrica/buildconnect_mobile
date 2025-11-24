@@ -50,7 +50,7 @@ const ClientHome = ({ navigation }: any) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 40 }}
         >
-          {/* Search Bar with Filter */}
+   
           <SearchBarWithFilter
             placeholder="Search..."
             onFilterPress={() => {}}

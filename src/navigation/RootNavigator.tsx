@@ -31,6 +31,14 @@ import SubmitBidScreen from '../screens/builders/submitbid/submitbid';
 import CreateProperty from '../screens/builders/createproperty/createproperty';
 import Contractdetails from '../screens/builders/contractdetails/contractdetails';
 import AddProject from '../screens/clients/addprojects/addproject';
+import ClientProjectDetails from '../screens/clients/clientprojects/clientprojectdetails';
+import ClosedProjects from '../screens/clients/closeprojects/closeprojects';
+import comparebids from '../screens/clients/comparebids/comparebids';
+import Inviteprofilescreen from '../screens/clients/inviteprofilescreen/inviteprofilescreen';
+import Proposalscreen from '../screens/clients/proposalscreen/proposalscreen';
+import contractscreen from '../screens/clients/contractscreen/contractscreen';
+import Revisionscreen from '../screens/clients/revisionscreen/revisionscreen';
+import ClientContractdetailsScreen from '../screens/clients/contractscreen/contractscreen';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -63,6 +71,19 @@ export type RootStackParamList = {
   CreateProperty: undefined;
   ContractDetails: undefined;
   AddProject:undefined;
+ ClientProjectDetails:undefined;
+ ClosedProjects:undefined;
+ CompareBidsScreen:undefined;
+ RevisionBidsScreen:undefined;
+ InviteProfileScreen: {
+    contractorId: string; 
+  };
+ ProposalScreen: {
+    bidId: string; 
+  };
+  ClientContractdetailsScreen:undefined;
+  RevisionScreen:undefined;
+
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -128,6 +149,12 @@ export default function RootNavigator() {
           <Stack.Screen name="BuilderPortfolio" component={PortfolioScreen} />
           <Stack.Screen name="BuilderProfileSuccess" component={ProfileSuccessScreen} />
           <Stack.Screen name="AddProject" component={AddProject}/>
+          <Stack.Screen name="ClientProjectDetails" component={ClientProjectDetails}/>
+           <Stack.Screen name="CompareBidsScreen" component={comparebids}/>
+          <Stack.Screen name="InviteProfileScreen" component={Inviteprofilescreen}/>
+          <Stack.Screen name="ProposalScreen" component={Proposalscreen}/>
+          <Stack.Screen name="ClientContractdetailsScreen" component={ClientContractdetailsScreen}/>
+          <Stack.Screen name="RevisionScreen" component={Revisionscreen}/>
         </>
       )}
     </Stack.Navigator>

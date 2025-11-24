@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { notification } from "@/src/constants/icon";
 import { AvatarImage } from "@/src/constants/image";
+import { ChevronDown } from 'lucide-react-native';
 
 interface DashboardHeaderProps {
   userName?: string;
@@ -31,7 +32,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
               Hi, {displayName}
             </Text>
             {showDropdown && (
-              <Text className="text-gray-600 text-sm">▼</Text>
+            <ChevronDown size={20} color="gray" />
             )}
           </View>
         </TouchableOpacity>
