@@ -32,7 +32,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
               Hi, {displayName}
             </Text>
             {showDropdown && (
-            <ChevronDown size={20} color="gray" />
+              <ChevronDown size={20} color="gray" />
             )}
           </View>
         </TouchableOpacity>

@@ -25,5 +25,10 @@ export const ENDPOINTS = {
   DASHBOARD: {
     GET_PROFILE: "/user/profile",
     UPDATE_PROFILE: "/user/update",
+  },
+
+  PROJECTS: {
+    GET_PROJECTS: "/projects/",
+    CREATE_PROJECT: "/projects/",
   }
 };
