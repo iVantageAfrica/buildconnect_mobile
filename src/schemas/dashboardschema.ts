@@ -21,7 +21,7 @@ export const submitBidSchema = z.object({
     .trim()
     .min(1, "Proposed timeline is required"),
   
-  projectProposal: z
+  proposal: z
     .string()
     .trim()
     .min(10, "Proposal must be at least 50 characters")
@@ -40,13 +40,17 @@ export const submitBidSchema = z.object({
         paymentAmount: z
           .number()
           .positive("Payment amount must be greater than 0"),
+              paymentPercentage: z.number().min(0).max(100).default(100), 
+                    description: z.string().optional(), 
+      orderIndex: z.number().default(0), 
       })
     )
     .min(1, "At least one milestone is required"),
   
-  portfolioReference: fileSchema.refine((val) => !!val, {
+  portfolioReferences: z.any().refine((val) => !!val, {
   message: "Additional information is required",
 }),
+
 });
 
 export const addPropertySchema = z.object({

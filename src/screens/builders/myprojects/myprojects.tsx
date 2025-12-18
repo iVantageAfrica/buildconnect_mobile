@@ -10,11 +10,13 @@ import { RootStackParamList } from '@/src/navigation/RootNavigator';
 import AppLayout from '@/src/components/Layouts/AppLayout';
 import ProjectsWithMilestone from '@/src/components/Cards/ProjectsWithMileStone';
 import EmptyScreenComponent from '@/src/components/Miscallaneous/EmptyScreenComponent';
+import { useProjects } from '@/src/core/hooks/useProjects';
 
 
 const MyProjectScreen = () => {
   const [selected, setSelected] = useState('all');
 const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
   const filters = [
     { id: 'all', label: 'All Projects', count: 5 },
     { id: 'active', label: 'Active', count: 3 },

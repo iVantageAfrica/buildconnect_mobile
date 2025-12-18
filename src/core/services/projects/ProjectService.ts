@@ -1,3 +1,4 @@
+
 import { ENDPOINTS } from "@/src/constants/endpoints";
 import axiosInstance from "../axios";
 
@@ -25,5 +26,10 @@ export const ProjectService = {
   getProjects: () => axiosInstance.get(ENDPOINTS.PROJECTS.GET_PROJECTS),
   createProject: (data: CreateProjectPayload) => 
     axiosInstance.post(ENDPOINTS.PROJECTS.CREATE_PROJECT, data),
+    getProjectsMarketPlace: (params: any): Promise<any> => 
+    axiosInstance.get(`${ENDPOINTS.PROJECTS.MARKETPLACE}/`, { params }),
+getSingleProjectsMarketPlace: (id: any): Promise<any> => 
+    axiosInstance.get(`${ENDPOINTS.PROJECTS.MARKETPLACE}/${id}`),
+  register: (data: any) => axiosInstance.post(ENDPOINTS.AUTH.REGISTER, data),
 };
 

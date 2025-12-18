@@ -1,3 +1,4 @@
+import { PROJECTS } from "../utils/data";
 
 export const ENDPOINTS = {
   AUTH: {
@@ -30,5 +31,10 @@ export const ENDPOINTS = {
   PROJECTS: {
     GET_PROJECTS: "/projects/",
     CREATE_PROJECT: "/projects/",
+      PROJECTS:"/projects",
+    MARKETPLACE:"/marketplace"
+  },
+    BID:{
+    BIDS:"/bids/"
   }
 };

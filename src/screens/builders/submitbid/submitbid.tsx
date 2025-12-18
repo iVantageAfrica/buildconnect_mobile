@@ -1,74 +1,156 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React from "react";
-
+import React, { useState } from "react"; 
 import { SubmitBidInput, submitBidSchema } from "@/src/schemas/dashboardschema";
-import { Controller, useForm, useFieldArray } from "react-hook-form";
+import { Controller, useForm, useFieldArray, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormInput from "@/src/components/Forms/Formnput";
 import { FormTextArea } from "@/src/components/Forms/TextArea";
 import { FormDatePicker } from "@/src/components/Forms/DatePicker";
-import { X, Plus } from "lucide-react-native";
-import ImageUploadComponent from "@/src/components/Forms/ImageForm";
+import { X, Plus, AlertCircle } from "lucide-react-native";
 import { reportImage } from "@/src/constants/icon";
 import GradientButton from "@/src/components/Buttons/GradientButton";
-import { useProjects } from "@/src/core/hooks/useProjects";
 import SuccessScreen from "@/src/components/Notifications/SucessScreen";
 import AppLayout from "@/src/components/Layouts/AppLayout";
-
+import { useBids } from "@/src/core/hooks/UseBids";
+import { uploadFile } from "@/src/utils/fileUpload";
+import FileUploadComponent from "@/src/components/Forms/FileUploadComponent";
+import { useRoute } from "@react-navigation/native";
 
 const SubmitBidScreen = () => {
+  const [isUploading, setIsUploading] = useState(false); 
+  const [portfolioReferenceError, setPortfolioReferenceError] = useState<string | null>(null);
+  const [validationError, setValidationError] = useState<string | null>(null);
+  const route = useRoute();
+  const { projectId } = route.params as { projectId: string };
+  
   const {
     control,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<SubmitBidInput>({
     resolver: zodResolver(submitBidSchema),
     defaultValues: {
       bidAmount: 0,
       proposedTimeline: "",
-      projectProposal: "",
+      proposal: "",
       milestones: [
         {
           milestoneName: "",
+          description: "",
           completionDate: "",
           paymentAmount: 0,
+          paymentPercentage: 100,
+          orderIndex: 0,
         },
       ],
-      portfolioReference: null,
+      portfolioReferences: null,
     },
   });
+
+  // Watch form values to calculate totals
+  const bidAmount = watch("bidAmount");
+  const milestones = watch("milestones");
+
+  // Calculate total milestone payments
+  const calculateTotalMilestonePayments = () => {
+    if (!milestones || milestones.length === 0) return 0;
+    return milestones.reduce((total, milestone) => {
+      return total + (Number(milestone.paymentAmount) || 0);
+    }, 0);
+  };
+
+  // Check if milestone payments match bid amount
+  const checkPaymentValidation = () => {
+    const totalMilestonePayments = calculateTotalMilestonePayments();
+    const isValid = totalMilestonePayments === bidAmount;
+    
+    if (!isValid) {
+      setValidationError(`Milestone payments (${totalMilestonePayments}) must equal bid amount (${bidAmount})`);
+    } else {
+      setValidationError(null);
+    }
+    
+    return isValid;
+  };
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: "milestones",
   });
 
+  const { submitBidMutation, submitBidSuccess } = useBids();
 
-   const {submitBidMutation, submitBidSuccess} = useProjects()
-    const onSubmit = (data: SubmitBidInput) => {
-       submitBidMutation.mutate(data);
-    };
+  const onSubmit = async (data: SubmitBidInput) => {
+    try {
+      // Check milestone payments before submitting
+      if (!checkPaymentValidation()) {
+        return;
+      }
 
-    if(submitBidSuccess){
-   return (
+      setIsUploading(true);
+      setPortfolioReferenceError(null);
+      
+      const uploadResult = await uploadFile(
+        data.portfolioReferences,
+        "portfolio", 
+        "Portfolio Reference"
+      );
+      
+      const milestonesArray = data.milestones.map((milestone, index) => ({
+        milestoneName: milestone.milestoneName,
+        description: milestone.description || "",
+        completionDate: milestone.completionDate.split('T')[0],
+        paymentAmount: Number(milestone.paymentAmount),
+        paymentPercentage: milestone.paymentPercentage,
+        orderIndex: index,
+      }));
+      
+      const submitData = {
+        projectId: projectId,
+        bidAmount: Number(data.bidAmount),
+        proposedTimeline: data.proposedTimeline,
+        proposal: data.proposal,
+        portfolioReferences: [uploadResult.fileId],
+        milestones: milestonesArray,
+      };
+      
+      submitBidMutation.mutate(submitData);
+      
+    } catch (error: any) {
+      let errorMessage = "Failed to submit bid.";
+      if (error?.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      }
+      setPortfolioReferenceError(errorMessage);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  // Display payment validation summary
+  const totalMilestonePayments = calculateTotalMilestonePayments();
+  const isPaymentValid = totalMilestonePayments === bidAmount;
+
+  if (submitBidSuccess) {
+    return (
       <SuccessScreen
-  title="Bid Submitted"
-  message="Your bid has been successfully submitted. The client will be notified. "
-  navigateTo="SignIn"
-  buttonTitle="View my Bids"
- />
-  )
-}
-  
+        title="Bid Submitted"
+        message="Your bid has been successfully submitted."
+        navigateTo="MyBids"
+        buttonTitle="View my Bids"
+      />
+    );
+  }
 
   return (
     <AppLayout screenName="Submit Bid">
-
-      <Text className="font-inter px-3  pt-4 ">
-        You are submitting a bid for the <Text className="text-lg font-interbold">Modern Bungalow Build Project</Text>
+      <Text className="font-inter px-3 pt-4">
+        You are submitting a bid
       </Text>
 
       <View className="px-3">
+        {/* Bid Amount */}
         <View>
           <Controller
             control={control}
@@ -91,7 +173,8 @@ const SubmitBidScreen = () => {
           )}
         </View>
 
-        <View>
+        {/* Proposed Timeline */}
+        <View className="pt-4">
           <Controller
             control={control}
             name="proposedTimeline"
@@ -112,25 +195,52 @@ const SubmitBidScreen = () => {
           )}
         </View>
 
+        {/* Project Proposal */}
         <View className="pt-4">
           <Controller
             control={control}
-            name="projectProposal"
+            name="proposal"
             render={({ field }) => (
               <FormTextArea
                 label="Project Proposal"
-                placeholder="Briefly introduce yourself and why you're a good fit for this project..."
+                placeholder="Briefly introduce yourself..."
                 value={field.value}
                 onChangeText={field.onChange}
-                hasError={!!errors.projectProposal}
-                errorMessage={errors.projectProposal?.message}
+                hasError={!!errors.proposal}
+                errorMessage={errors.proposal?.message}
                 width="w-full"
               />
             )}
           />
         </View>
 
+        {/* Payment Summary */}
+        <View className="mt-4 p-3 bg-blue-50 rounded-lg">
+          <View className="flex-row justify-between items-center">
+            <Text className="font-inter font-medium">Payment Summary</Text>
+            <Text className={`font-inter ${isPaymentValid ? 'text-green-600' : 'text-red-600'}`}>
+              {isPaymentValid ? '✓ Valid' : '✗ Invalid'}
+            </Text>
+          </View>
+          <View className="flex-row justify-between mt-1">
+            <Text className="font-inter text-gray-600">Bid Amount:</Text>
+            <Text className="font-inter font-medium">${bidAmount || 0}</Text>
+          </View>
+          <View className="flex-row justify-between">
+            <Text className="font-inter text-gray-600">Total Milestone Payments:</Text>
+            <Text className="font-inter font-medium">${totalMilestonePayments}</Text>
+          </View>
+          {!isPaymentValid && (
+            <View className="flex-row items-center mt-2 p-2 bg-red-50 rounded">
+              <AlertCircle size={16} color="#EF4444" className="mr-2" />
+              <Text className="text-red-600 text-sm flex-1">
+                Milestone payments (${totalMilestonePayments}) must equal bid amount (${bidAmount || 0})
+              </Text>
+            </View>
+          )}
+        </View>
 
+        {/* Milestones Section */}
         <View className="mt-4 mx-2">
           <View className="flex-row justify-between items-center mb-4">
             <Text className="font-worksanssemibold text-xl">Milestones</Text>
@@ -138,8 +248,11 @@ const SubmitBidScreen = () => {
               onPress={() =>
                 append({
                   milestoneName: "",
+                  description: "",
                   completionDate: "",
                   paymentAmount: 0,
+                  paymentPercentage: 100,
+                  orderIndex: fields.length,
                 })
               }
               className="flex-row gap-2 items-center"
@@ -150,7 +263,7 @@ const SubmitBidScreen = () => {
           </View>
 
           {fields.map((field, index) => (
-            <View key={field.id} className="border border-gray-300 rounded-xl p-4 mb-4">
+            <View key={field.id} className="border border-gray-300 rounded-xl p-4 mb-4 pb-8">
               <View className="flex-row justify-between items-center mb-4">
                 <Text className="font-inter text-xl">Milestone {index + 1}</Text>
                 {fields.length > 1 && (
@@ -174,14 +287,27 @@ const SubmitBidScreen = () => {
                     />
                   )}
                 />
-                {errors.milestones?.[index]?.milestoneName && (
-                  <Text className="font-inter pt-1 text-red-500 text-sm">
-                    {errors.milestones[index]?.milestoneName?.message}
-                  </Text>
-                )}
               </View>
 
-              <View className="pt-3">
+              <View className="py-4">
+                <Controller
+                  control={control}
+                  name={`milestones.${index}.description`}
+                  render={({ field }) => (
+                    <FormTextArea
+                      label="Description"
+                      placeholder="Describe this milestone..."
+                      value={field.value}
+                      onChangeText={field.onChange}
+                      hasError={!!errors.milestones?.[index]?.description}
+                      width="w-full"
+                      height={80}
+                    />
+                  )}
+                />
+              </View>
+
+              <View className="mt-4">
                 <Controller
                   control={control}
                   name={`milestones.${index}.completionDate`}
@@ -189,15 +315,14 @@ const SubmitBidScreen = () => {
                     <FormDatePicker
                       label="Completion Date"
                       value={field.value ? new Date(field.value) : new Date()}
-                      onChange={(date) => field.onChange(date.toISOString())}
+                      onChange={(date) => field.onChange(date.toISOString().split('T')[0])}
                       hasError={!!errors.milestones?.[index]?.completionDate}
-                      errorMessage={errors.milestones?.[index]?.completionDate?.message}
                     />
                   )}
                 />
               </View>
 
-              <View>
+              <View className="pt-3">
                 <Controller
                   control={control}
                   name={`milestones.${index}.paymentAmount`}
@@ -212,38 +337,58 @@ const SubmitBidScreen = () => {
                     />
                   )}
                 />
-                {errors.milestones?.[index]?.paymentAmount && (
-                  <Text className="font-inter pt-1 text-red-500 text-sm">
-                    {errors.milestones[index]?.paymentAmount?.message}
-                  </Text>
-                )}
+              </View>
+
+              <View className="pt-3">
+                <Controller
+                  control={control}
+                  name={`milestones.${index}.paymentPercentage`}
+                  render={({ field }) => (
+                    <FormInput
+                      placeholder="Enter percentage"
+                      label="Payment Percentage (%)"
+                      value={String(field.value)}
+                      hasError={!!errors.milestones?.[index]?.paymentPercentage}
+                      onChangeText={(text) => field.onChange(Number(text))}
+                      keyboardType="numeric"
+                    />
+                  )}
+                />
               </View>
             </View>
           ))}
         </View>
 
-   <View>
-         <Controller
-          control={control}
-          name="portfolioReference"
-          render={() => (
-            <ImageUploadComponent
-            title="click to uplaod or drag and drop"
-            image={reportImage}
-            label={"Portfolio & Reference"}
-            note="PNG, JPG, PDF(max. 5MB)"
-              control={control}
-              name="portfolioReference"
-              error={errors.portfolioReference?.message as string | undefined}
-            />
-          )}
-        />
-      </View>
-
-     <View className="pt-6">
-          <GradientButton loading={submitBidMutation.isPending} title="Submit Bid" onPress={handleSubmit(onSubmit)} />
+        {/* Portfolio Reference Upload */}
+        <View>
+          <FileUploadComponent
+            control={control}
+            name="portfolioReferences"
+            label="Portfolio Reference"
+            title="Upload Portfolio Reference"
+            note="PNG, JPG, PDF (max. 5MB)"
+            icon={reportImage}
+            maxSizeMB={5}
+            error={
+              portfolioReferenceError || 
+              (errors.portfolioReferences?.message as string)
+            }
+            onError={(error) => setPortfolioReferenceError(error || null)} 
+            containerClassName="pt-10"
+          />
         </View>
 
+        {/* Submit Button */}
+        <View className="pt-6">
+          <GradientButton 
+            loading={submitBidMutation.isPending || isUploading} 
+            title="Submit Bid" 
+            onPress={handleSubmit(onSubmit)} 
+            disabled={!isPaymentValid || submitBidMutation.isPending || isUploading}
+          />
+          
+          
+        </View>
       </View>
     </AppLayout>
   );

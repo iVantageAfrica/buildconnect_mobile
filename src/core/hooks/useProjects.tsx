@@ -1,8 +1,10 @@
 import { useAuthStore } from "@/src/store/Authstore";
 import { useNavigation } from "@react-navigation/native";
+import { AuthService } from "../services/auth/AuthService";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Alert } from "react-native";
 import { ProjectService } from "../services/projects/ProjectService";
 import { Project, ProjectsResponse } from "../services/projects/projectTypes";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/src/navigation/RootNavigator";
@@ -59,16 +61,33 @@ export const useProjects = () => {
     },
   });
 
-  // Legacy mutation for backward compatibility
+
+  const projectsMarketPlaceQuery = ( params: object) => {
+  return useQuery({
+    queryKey: ['getProjectQueryMarketplace',  params], 
+    queryFn: () => ProjectService.getProjectsMarketPlace(params),
+  });
+};
+
+
+ const singleProjectMarketPlaceQuery = (id :any) => {
+    return useQuery({
+      queryKey: ['getProjectSingleQueryMarketplace', id], 
+      queryFn: () => ProjectService.getSingleProjectsMarketPlace(id),
+    });
+  };
+   // Legacy mutation for backward compatibility
   const submitBidMutation = createProjectMutation;
 
   const projects = Array.isArray(projectsData?.data?.projects) ? projectsData.data.projects : [];
-
+  
   return {
     submitBidMutation,
     submitBidSuccess,
     projects,
     isLoadingProjects,
     projectsError,
+   projectsMarketPlaceQuery,
+   singleProjectMarketPlaceQuery
   };
 };
