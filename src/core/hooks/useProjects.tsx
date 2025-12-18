@@ -20,20 +20,20 @@ export const useProjects = () => {
   
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  // QUERIES
-  const { data: projectsData, isLoading: isLoadingProjects, error: projectsError } = useQuery({
-    queryKey: ["projects"],
-    queryFn: async () => {
-      const response = await ProjectService.getProjects();
-      const responseData = response.data as ProjectsResponse;
-          
-      if (Array.isArray(responseData?.data?.projects) && responseData.data.projects.length > 0) {
-        console.log("=== FIRST PROJECT EXAMPLE ===");
-        console.log(JSON.stringify(responseData.data.projects[0], null, 2));
-      }
-      return responseData;
-    },
+
+  const getAllProjectsQuery = ( params: object) => {
+  return useQuery({
+    queryKey: ['getAllProjects',  params], 
+    queryFn: () => ProjectService.getProjects(params),
   });
+};
+
+ const getSingleProjectQuery = (id :any) => {
+    return useQuery({
+      queryKey: ['getSingleProject', id], 
+      queryFn: () => ProjectService.getSingleProject(id),
+    });
+  };
 
   //MUTATIONS
   const createProjectMutation = useMutation({
@@ -76,18 +76,17 @@ export const useProjects = () => {
       queryFn: () => ProjectService.getSingleProjectsMarketPlace(id),
     });
   };
-   // Legacy mutation for backward compatibility
+
   const submitBidMutation = createProjectMutation;
 
-  const projects = Array.isArray(projectsData?.data?.projects) ? projectsData.data.projects : [];
+  
   
   return {
     submitBidMutation,
     submitBidSuccess,
-    projects,
-    isLoadingProjects,
-    projectsError,
+    getAllProjectsQuery,
    projectsMarketPlaceQuery,
-   singleProjectMarketPlaceQuery
+   singleProjectMarketPlaceQuery,
+   getSingleProjectQuery
   };
 };

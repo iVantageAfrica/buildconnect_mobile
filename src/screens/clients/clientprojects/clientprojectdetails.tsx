@@ -2,15 +2,18 @@
 import AppLayout from '@/src/components/Layouts/AppLayout'
 import Bids from '@/src/components/PagesComponent/Dashboard/Client/ProjectsComponent/Bids'
 import Overview from '@/src/components/PagesComponent/Dashboard/Client/ProjectsComponent/Overview'
+import { useRoute } from '@react-navigation/native'
 import React, { useState } from 'react'
 import { View, Text, Pressable, ScrollView } from 'react-native'
 
 
 const ClientProjectDetails = () => {
   const [activeTab, setActiveTab] = useState('Overview')
-
+ const route = useRoute();
+  const { projectId } = route.params as { projectId: string };
+    console.log("projectid" , projectId)
   const tabs = [
-    { name: 'Overview', component:<Overview/> },
+    { name: 'Overview', component:<Overview projectId = {projectId}/> },
     { name: 'Bids', component: <Bids/>},
     { name: 'Milestones', component: <Text>Malam</Text> },
     { name: 'Media', component: <Text>Yaya</Text> },

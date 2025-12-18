@@ -25,7 +25,7 @@ const ProjectDetailsScreen = ({ navigation }: any) => {
   const { projectId } = route.params as { projectId: string };
   const { singleProjectMarketPlaceQuery } = useProjects();
   const { data, isLoading, error } = singleProjectMarketPlaceQuery(projectId);
-  
+
 
   const apiResponse = data?.data;
   const projectData = apiResponse?.data || apiResponse; // Handle both nested structures

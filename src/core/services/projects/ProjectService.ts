@@ -23,13 +23,15 @@ export interface CreateProjectPayload {
 }
 
 export const ProjectService = {
-  getProjects: () => axiosInstance.get(ENDPOINTS.PROJECTS.GET_PROJECTS),
+  getProjects: (params :any) => axiosInstance.get(`${ENDPOINTS.PROJECTS.GET_PROJECTS}`,  { params }),
   createProject: (data: CreateProjectPayload) => 
     axiosInstance.post(ENDPOINTS.PROJECTS.CREATE_PROJECT, data),
     getProjectsMarketPlace: (params: any): Promise<any> => 
     axiosInstance.get(`${ENDPOINTS.PROJECTS.MARKETPLACE}/`, { params }),
 getSingleProjectsMarketPlace: (id: any): Promise<any> => 
     axiosInstance.get(`${ENDPOINTS.PROJECTS.MARKETPLACE}/${id}`),
+getSingleProject: (id: any): Promise<any> => 
+    axiosInstance.get(`${ENDPOINTS.PROJECTS.PROJECTS}/${id}`),
   register: (data: any) => axiosInstance.post(ENDPOINTS.AUTH.REGISTER, data),
 };
 

@@ -10,7 +10,7 @@ import { ScrollView, TouchableOpacity, View, Text } from "react-native"
 
 
 
-const Bids = () => {
+const Bids = (projectId:{projectId : string}) => {
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
  
