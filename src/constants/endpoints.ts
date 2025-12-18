@@ -1,3 +1,4 @@
+import { PROJECTS } from "../utils/data";
 
 export const ENDPOINTS = {
   AUTH: {
@@ -25,5 +26,12 @@ export const ENDPOINTS = {
   DASHBOARD: {
     GET_PROFILE: "/user/profile",
     UPDATE_PROFILE: "/user/update",
+  },
+  PROJECT:{
+    PROJECTS:"/projects",
+    MARKETPLACE:"/marketplace"
+  },
+    BID:{
+    BIDS:"/bids/"
   }
 };

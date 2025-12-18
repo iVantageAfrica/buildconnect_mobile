@@ -61,7 +61,6 @@ export type RootStackParamList = {
   AccountSuccess: undefined;
   FindProjects: undefined;
   MyProjects: undefined;
-  ProjectDetails: undefined;
   BuilderBasicInfo: undefined;
   BuilderProfessionalDocs: undefined;
   BuilderServices: undefined;
@@ -78,12 +77,14 @@ export type RootStackParamList = {
  InviteProfileScreen: {
     contractorId: string; 
   };
+  ProjectDetails: {
+    projectId: string; 
+  };
  ProposalScreen: {
     bidId: string; 
   };
   ClientContractdetailsScreen:undefined;
   RevisionScreen:undefined;
-
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
