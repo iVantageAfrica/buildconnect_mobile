@@ -20,9 +20,9 @@ export const FormTextArea: React.FC<FormTextAreaProps> = ({
   onChangeText,
   hasError = false,
   errorMessage,
-  width = "w-full",
+  width = "",
   numberOfLines = 6,
-  minHeight = 150,
+  minHeight = 100,
   ...rest
 }) => {
   return (

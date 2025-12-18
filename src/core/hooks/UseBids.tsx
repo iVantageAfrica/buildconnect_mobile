@@ -7,9 +7,10 @@ import Toast from "react-native-toast-message";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/src/navigation/RootNavigator";
 import { useState } from "react";
-import { ProjectService } from "../services/projects/ProjectService";
+import { BidService } from "../services/bids/BidService";
 
-export const useProjects = () => {
+
+export const useBids = () => {
   const [submitBidSuccess, setSubmitBidSuccess] = useState(false);
 
   const { setAuthData } = useAuthStore();
@@ -18,48 +19,39 @@ export const useProjects = () => {
 
   //MUTATIONS
   const submitBidMutation = useMutation({
-    mutationFn: AuthService.login,
+    mutationFn: BidService.submitBid,
     onSuccess: (res: any) => {
-      const loginData = res?.data;
+      const submitBidData = res?.data;
       if (
-        (loginData.statusCode === 200 || loginData.statusCode === 201) &&
-        loginData.success === true
+        (submitBidData.statusCode === 200 || submitBidData.statusCode === 201) &&
+        submitBidData.success === true
       ) {
-        const { authToken, refreshToken } = loginData.data;
-        setAuthData(authToken, refreshToken);
-        Alert.alert("Login Sucessful");
+         setSubmitBidSuccess(true);
       }
     },
     onError: (error: any) => {
+         const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Failed to create Bids.";
       Toast.show({
         type: "error",
         text1: "Submit Failed",
-        text2: error instanceof Error ? error.message : "Invalid credentials",
-      });
-          setSubmitBidSuccess(true);
+        text2: errorMessage
+      });   
     },
   });
 
 
-  const projectsMarketPlaceQuery = ( params: object) => {
+  const projectsQuery = ( params: object) => {
   return useQuery({
-    queryKey: ['getProjectQueryMarketplace',  params], 
-    queryFn: () => ProjectService.getProjectsMarketPlace(params),
+    queryKey: ['getprojectquery',  params], 
+    queryFn: () => ProjectService.getProjects(params),
   });
 };
-
-
- const singleProjectMarketPlaceQuery = (id :any) => {
-    return useQuery({
-      queryKey: ['getProjectSingleQueryMarketplace', id], 
-      queryFn: () => ProjectService.getSingleProjectsMarketPlace(id),
-    });
-  };
   
   return {
   submitBidMutation,
   submitBidSuccess,
-   projectsMarketPlaceQuery,
-   singleProjectMarketPlaceQuery
   };
 };
