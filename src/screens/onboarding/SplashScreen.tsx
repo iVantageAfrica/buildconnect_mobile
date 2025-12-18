@@ -1,22 +1,27 @@
 import React, { useEffect } from 'react';
-import { View, Image, Text, ActivityIndicator } from 'react-native';
+import { View, Image, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import colors from "../../constants/colors"
 import string from "../../constants/strings"
 import { SplashImage } from '@/src/constants/image';
+import type { RootStackParamList } from '@/src/navigation/RootNavigator';
 
-export default function SplashScreen({ navigation }: any) {
-  
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
+export default function SplashScreen({ navigation: navigationProp }: { navigation?: NavigationProp }) {
+  const navigationHook = useNavigation<NavigationProp>();
+  const navigation = navigationProp || navigationHook;
 
   useEffect(() => {
+    if (navigation && typeof navigation.replace === 'function') {
       const timeout = setTimeout(() => {
         navigation.replace('Onboarding');
       }, 2000);
 
       return () => clearTimeout(timeout);
-  
+    }
   }, [navigation]);
-
-
 
   return (
     <View className="flex-1 items-center justify-center p-16 bg-primary">

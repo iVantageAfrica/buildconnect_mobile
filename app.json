@@ -9,17 +9,15 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.buildconnect.app.test"
     },
     "android": {
+      "package": "com.buildconnect.app.test",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./src/assets/images/icon.png",
-        "backgroundImage": "./src/assets/images/icon.png",
-        "monochromeImage": "./src/assets/images/icon.png"
+        "backgroundColor": "#E6F4FE"
       },
-      "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "edgeToEdgeEnabled": true
     },
     "plugins": [
       [
@@ -40,6 +38,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c6f72f69-6024-4774-b708-47a2feeccf7c"
+      }
+    },
+    "owner": "ivantage"
   }
 }

@@ -42,7 +42,10 @@ export const useAuth = () => {
             text1: "Login Successful",
             text2: "",
           });
-          navigation.navigate("Dashboard");
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "Dashboard" }],
+          });
         }
       } else {
         Toast.show({

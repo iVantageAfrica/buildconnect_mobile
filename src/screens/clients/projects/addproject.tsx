@@ -15,9 +15,46 @@ import { useProjects } from "@/src/core/hooks/useProjects";
 import SuccessScreen from "@/src/components/Notifications/SucessScreen";
 import AppLayout from "@/src/components/Layouts/AppLayout";
 import DropdownField from "@/src/components/Forms/DropDown";
-import { budget } from "@/src/utils/data";
+import colors from "@/src/constants/colors";
+import { useQuery } from "@tanstack/react-query";
+import { LookupService } from "@/src/core/services/lookup/LookupService";
+import { uploadFile } from "@/src/utils/fileUpload";
+import Toast from "react-native-toast-message";
+import { FileUploadResult } from "@/src/components/Forms/FileUploadComponent";
 
 const AddProject = () => {
+  const [openDatePicker, setOpenDatePicker] = React.useState<'start' | 'end' | null>(null);
+  const [isUploading, setIsUploading] = React.useState(false);
+
+  const { data: budgetRangesResponse, isLoading: isLoadingBudgetRanges } = useQuery({
+    queryKey: ["budgetRanges"],
+    queryFn: async () => {
+      const response = await LookupService.getBudgetRanges();
+      return response.data.data.items;
+    },
+  });
+
+  const budgetRangesData = budgetRangesResponse?.map((item) => ({
+    label: item.label,
+    value: item.value,
+    id: item.id,
+  })) || [];
+
+  // Fetch project types from API - store full items with IDs
+  const { data: projectTypesResponse, isLoading: isLoadingProjectTypes } = useQuery({
+    queryKey: ["projectTypes"],
+    queryFn: async () => {
+      const response = await LookupService.getProjectTypes();
+      return response.data.data.items;
+    },
+  });
+
+  const projectTypesData = projectTypesResponse?.map((item) => ({
+    label: item.label,
+    value: item.value,
+    id: item.id,
+  })) || [];
+
   const {
     control,
     handleSubmit,
@@ -50,9 +87,106 @@ const AddProject = () => {
 
   const { submitBidMutation, submitBidSuccess } = useProjects();
 
+  const onSubmit = async (data: AddProjectInput) => {
+    try {
+      setIsUploading(true);
 
-  const onSubmit = (data: AddProjectInput) => {
-    submitBidMutation.mutate(data);
+      // STEP 1: Upload project media file first (if provided) and get the file ID
+      let mediaFileId: string | null = null;
+      if (data.projectMedia) {
+        // Convert ImageUploadComponent format to FileUploadResult format
+        let fileData: FileUploadResult;
+        
+        if ('size' in data.projectMedia && 'name' in data.projectMedia) {
+          // Already in correct format
+          fileData = data.projectMedia as FileUploadResult;
+        } else {
+          // Get file size and name from URI
+          const response = await fetch(data.projectMedia.uri);
+          const blob = await response.blob();
+          const fileName = data.projectMedia.uri.split('/').pop() || 'image.jpg';
+          const mediaData = data.projectMedia as any;
+          
+          fileData = {
+            uri: data.projectMedia.uri,
+            name: fileName,
+            type: mediaData.type || 'image/jpeg',
+            width: mediaData.width,
+            height: mediaData.height,
+            size: blob.size,
+          };
+        }
+
+        // Perform file upload using existing upload flow
+        const uploadResult = await uploadFile(
+          fileData,
+          "portfolio",
+          "portfolio"
+        );
+        
+        // Store the file ID from upload result
+        mediaFileId = uploadResult.fileId;
+      }
+
+      setIsUploading(false);
+
+      // STEP 2: Find IDs from lookup data
+      const selectedProjectType = projectTypesResponse?.find(
+        (item) => item.value === data.projectType
+      );
+      const selectedBudgetRange = budgetRangesResponse?.find(
+        (item) => item.value === data.budget
+      );
+
+      if (!selectedProjectType || !selectedBudgetRange) {
+        Toast.show({
+          type: "error",
+          text1: "Validation Error",
+          text2: "Please select valid project type and budget range",
+        });
+        return;
+      }
+
+      // Format dates to YYYY-MM-DD
+      const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      };
+
+      // STEP 3: Create project with the uploaded file ID
+      const apiPayload = {
+        title: data.projectName,
+        description: data.description,
+        location: data.location,
+        projectTypeId: selectedProjectType.id,
+        budgetRangeId: selectedBudgetRange.id,
+        timelineId: "1c597cb4-185c-4a37-8192-c41227a56ca0", 
+        startDate: formatDate(data.startDate),
+        endDate: formatDate(data.endDate),
+        milestones: data.milestones.map((milestone) => ({
+          name: milestone.milestoneName,
+          description: milestone.milestoneName, 
+          completionDate: formatDate(milestone.completionDate),
+          amount: milestone.paymentAmount,
+        })),
+        mediaFileIds: mediaFileId ? [mediaFileId] : [], // Use the file ID from upload
+        fileIds: [],
+        metadata: {},
+      };
+
+      // Submit project creation with the file ID
+      submitBidMutation.mutate(apiPayload);
+    } catch (error: any) {
+      setIsUploading(false);
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: error?.message || "Failed to process project data",
+      });
+    }
   };
 
 
@@ -69,18 +203,25 @@ const AddProject = () => {
 
   return (
     <AppLayout screenName="Add Project"> 
-      <Text className="font-inter px-3 pt-4">
-        Create a new project to get bids from builders
-      </Text>
+      <View 
+        style={{ 
+          backgroundColor: colors.background_light, 
+          padding: 16,
+          flex: 1 
+        }}
+      >
+        <Text className="font-interbold pt-4">
+          Project Details
+        </Text>
 
-      <View className="px-3">
+        <View>
         <View>
           <Controller
             control={control}
             name="projectName"
             render={({ field }) => (
               <FormInput
-                placeholder="Enter project name"
+                placeholder="e.g Modern Bungalow Construction"
                 label="Project Name"
                 value={String(field.value)}
                 hasError={!!errors.projectName}
@@ -95,25 +236,15 @@ const AddProject = () => {
           )}
         </View>
 
-        <View>
-          <Controller
-            control={control}
+        <View className="pt-3 pb-2">
+          <DropdownField
             name="projectType"
-            render={({ field }) => (
-              <FormInput
-                placeholder="Enter project type"
-                label="Project Type"
-                value={field.value}
-                hasError={!!errors.projectType}
-                onChangeText={field.onChange}
-              />
-            )}
+            control={control}
+            label="Project Type"
+            placeholder={isLoadingProjectTypes ? "Loading..." : "Select project type"}
+            data={projectTypesData || []}
+            error={errors.projectType?.message as string}
           />
-          {errors.projectType && (
-            <Text className="font-inter pt-1 text-red-500 text-sm">
-              {errors.projectType.message}
-            </Text>
-          )}
         </View>
 
         <View>
@@ -122,7 +253,7 @@ const AddProject = () => {
             name="location"
             render={({ field }) => (
               <FormInput
-                placeholder="Enter project location" 
+                placeholder="eg Lagos, Nigeria" 
                 label="Location"
                 value={field.value}
                 hasError={!!errors.location}
@@ -142,8 +273,8 @@ const AddProject = () => {
             name="budget"
             control={control}
             label="Budget"
-            placeholder="Select budget range"
-            data={budget}
+            placeholder={isLoadingBudgetRanges ? "Loading..." : "Select budget range"}
+            data={budgetRangesData || []}
             error={errors.budget?.message as string}
           />
         </View>
@@ -160,6 +291,10 @@ const AddProject = () => {
                   onChange={(date) => field.onChange(date.toISOString())}
                   hasError={!!errors.startDate}
                   errorMessage={errors.startDate?.message}
+                  isOpen={openDatePicker === 'start'}
+                  onOpen={() => setOpenDatePicker('start')}
+                  onClose={() => setOpenDatePicker(null)}
+                  minimumDate={new Date()}
                 />
               )}
             />
@@ -176,6 +311,9 @@ const AddProject = () => {
                   onChange={(date) => field.onChange(date.toISOString())}
                   hasError={!!errors.endDate}
                   errorMessage={errors.endDate?.message}
+                  isOpen={openDatePicker === 'end'}
+                  onOpen={() => setOpenDatePicker('end')}
+                  onClose={() => setOpenDatePicker(null)}
                 />
               )}
             />
@@ -311,11 +449,12 @@ const AddProject = () => {
 
         <View className="pt-6">
           <GradientButton 
-            loading={submitBidMutation.isPending} 
+            loading={isUploading || submitBidMutation.isPending} 
             title="Create Project" 
             onPress={handleSubmit(onSubmit)} 
           />
         </View>
+      </View>
       </View>
     </AppLayout>
   );

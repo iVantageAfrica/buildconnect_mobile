@@ -27,8 +27,11 @@ export const ENDPOINTS = {
     GET_PROFILE: "/user/profile",
     UPDATE_PROFILE: "/user/update",
   },
-  PROJECT:{
-    PROJECTS:"/projects",
+
+  PROJECTS: {
+    GET_PROJECTS: "/projects/",
+    CREATE_PROJECT: "/projects/",
+      PROJECTS:"/projects",
     MARKETPLACE:"/marketplace"
   },
     BID:{

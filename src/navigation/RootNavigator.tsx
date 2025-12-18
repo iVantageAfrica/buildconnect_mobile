@@ -30,7 +30,7 @@ import ProjectDetailsScreen from '../screens/builders/projectdetails/projectdeta
 import SubmitBidScreen from '../screens/builders/submitbid/submitbid';
 import CreateProperty from '../screens/builders/createproperty/createproperty';
 import Contractdetails from '../screens/builders/contractdetails/contractdetails';
-import AddProject from '../screens/clients/addprojects/addproject';
+import AddProject from '../screens/clients/projects/addproject';
 import ClientProjectDetails from '../screens/clients/clientprojects/clientprojectdetails';
 import ClosedProjects from '../screens/clients/closeprojects/closeprojects';
 import comparebids from '../screens/clients/comparebids/comparebids';
@@ -102,10 +102,8 @@ export default function RootNavigator() {
     loadAuth();
   }, []);
 
-  if (loading) return <SplashScreen />;
-
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Splash">
       {!isLogin ? (
         <>
           <Stack.Screen name="Splash" component={SplashScreen} />

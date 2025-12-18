@@ -1,0 +1,41 @@
+{
+  "cli": {
+    "version": ">= 16.0.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk",
+        "image": "latest",
+        "env": {
+          "ANDROID_NDK_VERSION": "25.2.9519653",
+          "EXPO_ANDROID_GRADLE_DAEMON_MAX_IDLE_TIMEOUT": "60000"
+        }
+      },
+      "ios": {
+        "simulator": false
+      }
+    },
+    "production": {
+      "android": {
+        "buildType": "apk",
+        "image": "latest",
+        "env": {
+          "ANDROID_NDK_VERSION": "25.2.9519653",
+          "EXPO_ANDROID_GRADLE_DAEMON_MAX_IDLE_TIMEOUT": "60000"
+        }
+      },
+      "ios": {
+        "simulator": false
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

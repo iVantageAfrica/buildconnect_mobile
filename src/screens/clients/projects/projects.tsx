@@ -1,27 +1,34 @@
 
 import AppLayout from '@/src/components/Layouts/AppLayout'
 import EmptyScreenComponent from '@/src/components/Miscallaneous/EmptyScreenComponent'
-import { PROJECTS } from '@/src/utils/data'
 import React, { useState } from 'react'
-import { View, Text, Pressable, ScrollView, TouchableOpacity } from 'react-native'
-import ProjectsWithMilestone from "@/src/components/Cards/ProjectsWithMileStone";
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '@/src/navigation/RootNavigator'
+import ProjectsComponent from '@/src/components/Cards/ProjectsComponent'
+import { useProjects } from '@/src/core/hooks/useProjects'
 
 const ClientProjectsScreen = ({ navigation }: any) => {
+  const { projects, isLoadingProjects, projectsError } = useProjects();
+  const nav = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  
   const filters = [
-    { id: 'all', label: 'All', count: 5 },
-    { id: 'active', label: 'Active', count: 3 },
-    { id: 'pending', label: 'Pending', count: 1 },
-    { id: 'completed', label: 'Completed', count: 1 },
+    { id: 'all', label: 'All', count: projects.length },
+    { id: 'active', label: 'Active', count: 0 },
+    { id: 'pending', label: 'Pending', count: 0 },
+    { id: 'completed', label: 'Completed', count: 0 },
   ];
-    const [selected, setSelected] = useState('all');
+  const [selected, setSelected] = useState('all');
+
+  const handleAddProject = () => {
+    nav.navigate('AddProject');
+  };
 
   return (
     <AppLayout screenName={"Projects"}>
 
-       <View className="mt-8 ">
+       <View className="mt-8 flex-1">
                 <ScrollView
                          horizontal
                          showsHorizontalScrollIndicator={false}
@@ -50,32 +57,32 @@ const ClientProjectsScreen = ({ navigation }: any) => {
                
     
             
-      {PROJECTS.length > 0 ? (
-        <>
-          {/* Show only first 2 projects */}
-          {PROJECTS.slice(0, 2).map((project) => (
-            <ProjectsWithMilestone
-              key={project.id}
-              postedTime="Posted 1 hour ago"
-              projectName={project.projectname}
-              location={project.location}
-              description={project.description}
-              budget={project.budget}
-             role="client"
-              bids={project.bids}
-              onPress={() =>
-                navigation.navigate('ClientProjectDetails', { projectId: project.id })
-              }
-            />
-          ))}
-        
-        </>
-      ) : (
-        <EmptyScreenComponent />
-      )}
-    
-             
-              </View>
+        {isLoadingProjects ? (
+          <View className="flex-1 justify-center items-center">
+            <ActivityIndicator size="large" color="#2463EB" />
+          </View>
+        ) : projectsError || !projects || projects.length === 0 ? (
+          <EmptyScreenComponent />
+        ) : (
+          <>
+            {projects.slice(0, 2).map((project) => (
+              <ProjectsComponent
+                key={project.id}
+                postedTime="Posted 1 hour ago"
+                projectName={project.title}
+                location={project.location}
+                description={project.description}
+                budget={project.budgetRange?.label || "N/A"}
+                duration={project.timeline?.label || "N/A"}
+                bids="0"
+                onPress={() =>
+                  navigation.navigate('ClientProjectDetails', { projectId: project.id })
+                }
+              />
+            ))}
+          </>
+        )}
+      </View>
     </AppLayout>
   )
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import { View, TextInput, Image, TouchableOpacity } from "react-native";
 import { SearchIcon, SettingsIcon } from "@/src/constants/icon";
+import colors from "@/src/constants/colors";
 
 interface SearchBarWithFilterProps {
   placeholder?: string;
@@ -24,7 +25,7 @@ const SearchBarWithFilter: React.FC<SearchBarWithFilterProps> = ({
           />
           <TextInput
             placeholder={placeholder}
-            placeholderTextColor="#9CA3AF"
+            placeholderTextColor={colors.text_placeholder}
             className="flex-1 text-base font-inter text-gray-800"
             onChangeText={onSearchChange}
           />
