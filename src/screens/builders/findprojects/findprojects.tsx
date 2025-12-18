@@ -9,47 +9,9 @@ import ProjectsComponent from '@/src/components/Cards/ProjectsComponent';
 import EmptyScreenComponent from '@/src/components/Miscallaneous/EmptyScreenComponent';
 import { useProjects } from '@/src/core/hooks/useProjects';
 import { formatTimeAgo } from '@/src/utils/data';
+import { Project, ProjectQueryParams } from '@/src/types/api';
 
-interface ProjectQueryParams {
-  status?: string;
-  minBudget?: number;
-  maxBudget?: number;
-  location?: string;
-  search?: string;
-  page?: number;
-  limit?: number;
-}
 
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  projectType: {
-    id: string;
-    label: string;
-    value: string;
-  };
-  status: 'draft' | 'posted' | 'in_progress' | 'completed' | 'cancelled';
-  location: string;
-  budgetRange: {
-    id: string;
-    label: string;
-    value: string;
-  };
-  timeline: {
-    id: string;
-    label: string;
-    value: string;
-  };
-  startDate: string;
-  endDate: string;
-  applicationDeadline: string | null;
-  requiredSkills: string[] | null;
-  image: string | null;
-  attachedDocuments: any[];
-  bidCount: number;
-  createdAt: string;
-}
 
 const FindprojectsScreen = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>('all');
@@ -67,7 +29,7 @@ const FindprojectsScreen = () => {
   
   const { data: queryData, isLoading, error, refetch } = projectsMarketPlaceQuery(queryParams);  
   
-  // ✅ Extract projects correctly
+
   const apiResponse = queryData?.data;
   const apiData = apiResponse?.data;
   const projects: Project[] = apiData?.projects || [];
@@ -119,7 +81,7 @@ const FindprojectsScreen = () => {
     setRefreshing(false);
   };
 
-  // Get filter counts based on project status
+
   const getStatusFilterCounts = () => {
     const allCount = projects.length;
     const draftCount = projects.filter(p => p.status === 'draft').length;
@@ -140,7 +102,6 @@ const FindprojectsScreen = () => {
 
   const statusFilters = getStatusFilterCounts();
 
-  // Get filtered projects based on selected status
   const getFilteredProjects = () => {
     if (selectedFilter === 'all') {
       return projects;
@@ -179,7 +140,6 @@ const FindprojectsScreen = () => {
           </View>
         )}
 
-        {/* Status Filter Tabs */}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}

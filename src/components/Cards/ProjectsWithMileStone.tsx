@@ -15,6 +15,7 @@ interface ProjectsComponentProps {
   duration: string;
   bids: string;
   role:string;
+  progress:number;
   onPress?: () => void;
   heartIcon?: ImageSourcePropType;
   locationIcon?: ImageSourcePropType;
@@ -29,6 +30,7 @@ const ProjectsWithMilestone: React.FC<ProjectsComponentProps> = ({
   description,
   budget,
   role,
+  progress,
   onPress,
   heartIcon = HeartIcon,
   locationIcon = LocationIcon,
@@ -46,7 +48,7 @@ const ProjectsWithMilestone: React.FC<ProjectsComponentProps> = ({
 
 
            <Text className="py-3 font-inter">{description}</Text>
-           <ProgressBar/>
+      <ProgressBar progress={progress}/>
         <View className="flex-row gap-2 py-3 items-center">
           <Image source={locationIcon} style={{ width: 15, height: 15 }} resizeMode="contain" />
           <Text className="font-inter">{location}</Text>

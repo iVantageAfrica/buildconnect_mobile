@@ -9,20 +9,23 @@ import {
 import { Check, ChevronDown } from "lucide-react-native";
 
 interface TimelineItem {
-  id: number;
+  id: string;
   title: string;
-  target: string;
+  targetDate: string;
   status: "completed" | "current" | "pending";
+  description?: string;
 }
 
-const timelineData: TimelineItem[] = [
-  { id: 1, title: "Planning", target: "2025-02-15", status: "completed" },
-  { id: 2, title: "Foundation", target: "2025-06-15", status: "completed" },
-  { id: 3, title: "Framing", target: "2025-07-29", status: "current" },
-  { id: 4, title: "Interior", target: "2025-09-26", status: "pending" },
-  { id: 5, title: "Finishes", target: "2025-11-05", status: "pending" },
-  { id: 6, title: "Completion", target: "2025-11-05", status: "pending" },
-];
+interface ProjectTimelineProps {
+  milestones?: Array<{
+    id: string;
+    title: string;
+    description?: string;
+    dueDate?: string;
+    status?: string;
+    completedAt?: string;
+  }>;
+}
 
 const StatusIcon: React.FC<{ status: TimelineItem["status"] }> = ({ status }) => {
   switch (status) {
@@ -44,7 +47,13 @@ const StatusIcon: React.FC<{ status: TimelineItem["status"] }> = ({ status }) =>
 const getLineColor = (status: string, nextStatus?: string): string => {
   if (status === "completed" && (nextStatus === "completed" || nextStatus === "current"))
     return "bg-blue-600";
-  return "bg-red-400";
+  return "bg-gray-300";
+};
+
+const getStatusFromMilestone = (milestone: any): "completed" | "current" | "pending" => {
+  if (milestone.completedAt) return "completed";
+  if (milestone.status === 'in_progress') return "current";
+  return "pending";
 };
 
 interface RowProps {
@@ -80,14 +89,43 @@ const Row: React.FC<RowProps> = ({ item, index, nextStatus }) => {
               style={{ transform: [{ rotate: isOpen ? "180deg" : "0deg" }] }}
             />
           </TouchableOpacity>
-          <Text className="text-sm text-gray-500 mt-1">Target: {item.target}</Text>
+          <Text className="text-sm text-gray-500 mt-1">Target: {item.targetDate}</Text>
+          
+          {isOpen && item.description && (
+            <Text className="text-gray-600 mt-2">{item.description}</Text>
+          )}
         </View>
       </View>
     </View>
   );
 };
 
-const ProjectTimeline: React.FC = () => {
+const ProjectTimeline: React.FC<ProjectTimelineProps> = ({ milestones = [] }) => {
+  // Convert API milestones to timeline format
+  const timelineData: TimelineItem[] = milestones.map((milestone, index) => ({
+    id: milestone.id || `milestone-${index}`,
+    title: milestone.title || `Milestone ${index + 1}`,
+    targetDate: milestone.dueDate 
+      ? new Date(milestone.dueDate).toLocaleDateString()
+      : "Not set",
+    status: getStatusFromMilestone(milestone),
+    description: milestone.description,
+  }));
+
+
+  if (milestones.length === 0) {
+    return (
+      <View className="flex-1 bg-gray-100 p-4 justify-center">
+        <View className="bg-white rounded-2xl p-6">
+          <Text className="text-xl font-bold text-gray-900 mb-4">Project Milestones</Text>
+          <Text className="text-gray-500 text-center py-8">
+            No milestones have been added to this project yet.
+          </Text>
+        </View>
+      </View>
+    );
+  }
+
   return (
     <View className="flex-1 bg-gray-100 p-4 justify-center">
       <View className="bg-white rounded-2xl p-6">

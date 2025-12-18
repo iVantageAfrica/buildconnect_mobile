@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Image, ActivityIndicator } from "react-native";
 import DashboardHeader from "@/src/components/PagesComponent/Dashboard/Shared/DashboardHeader";
 import SearchBarWithFilter from "@/src/components/PagesComponent/Dashboard/Shared/SearchBarWithFilter";
@@ -11,23 +11,34 @@ import ProjectsWithMilestone from "@/src/components/Cards/ProjectsWithMileStone"
 import { useProjects } from "@/src/core/hooks/useProjects";
 import EmptyComponent from "@/src/components/Miscallaneous/EmptyComponent";
 import ClientPropertiesComponet from "@/src/components/Cards/ClientPropertiesComponent";
+import { Project, ProjectQueryParams } from "@/src/types/api";
 
 
 const ClientHome = ({ navigation }: any) => {
   const { user } = useAuthStore();
-  const { projects, isLoadingProjects, projectsError } = useProjects();
+  const [queryParams, setQueryParams] = useState<ProjectQueryParams>({
+    page: 1,
+    limit: 2,
+    includeProgress: true
+  });
+
+  const { getAllProjectsQuery } = useProjects();
+
+  const { 
+    data: apiResponse, 
+    isLoading: isLoadingProjects, 
+    error: projectsError 
+  } = getAllProjectsQuery(queryParams);  
+  
+
+  const projectsList: Project[] = apiResponse?.data?.data?.projects || 
+                                  apiResponse?.data?.projects || 
+                                  apiResponse?.projects || 
+                                  [];
+  
   const firstName = user?.firstName || "User";
   
-  // Ensure projects is always an array
-  const projectsList = Array.isArray(projects) ? projects : [];
-  
-  // Log projects in component
-  React.useEffect(() => {
-    console.log("=== PROJECTS IN HOME COMPONENT ===");
-    console.log("Projects:", projects);
-    console.log("Projects List:", projectsList);
-    console.log("Projects List Length:", projectsList.length);
-  }, [projects, projectsList]);
+
 
   const handleNotification = () => {
     navigation.navigate("Notification");
@@ -39,13 +50,20 @@ const ClientHome = ({ navigation }: any) => {
 
   const handleEscrowAccount = () => {
     // Navigate to escrow account screen
+    navigation.navigate("EscrowAccount"); // Make sure this screen exists
   };
 
   const handleSupport = () => {
     // Navigate to support screen
+    navigation.navigate("Support"); // Make sure this screen exists
   };
+  
   const handleProject = () => {
-
+    navigation.navigate("AllProjects"); // Navigate to view all projects screen
+  }
+  
+  const handleViewAllRecommendations = () => {
+    navigation.navigate("Recommendations"); // Separate handler for recommendations
   }
 
   return (
@@ -72,7 +90,7 @@ const ClientHome = ({ navigation }: any) => {
           <ImageBanner imageSrc={AbeyyMortgageBankBanner} />
         </View>
 
-        <View className=" px-4">
+        <View className="px-4">
           <Text className="font-interbold text-xl mb-4 text-gray-900">
             Quick Access
           </Text>
@@ -113,42 +131,45 @@ const ClientHome = ({ navigation }: any) => {
               <ActivityIndicator size="large" color="#2463EB" />
             </View>
           ) : projectsError || !projectsList || projectsList.length === 0 ? (
-            <EmptyComponent title={""} />
+            <EmptyComponent 
+              title="No Projects Yet" 
+              description="Start by adding your first project"
+            />
           ) : (
             <>
-              {/* Show only first 2 projects */}
+             
               {projectsList.slice(0, 2).map((project) => (
                 <ProjectsWithMilestone
                   key={project.id}
                   postedTime="Posted 1 hour ago"
                   projectName={project.title}
+                  progress={project?.progress?.progressPercentage}
                   location={project.location}
                   description={project.description}
                   budget={project.budgetRange?.label || "N/A"}
                   duration={project.timeline?.label || "N/A"}
                   role="client"
                   bids="0"
-                  onPress={() =>
-                    navigation.navigate('ProjectDetails', { projectId: project.id })
-                  }
+                    onPress={() =>
+                  navigation.navigate('ClientProjectDetails', { projectId: project.id })
+                }
                 />
               ))}
             </>
           )}
         </View>
 
-        <View>
+        <View className="mt-8">
           <View className="mx-3 flex-row justify-between ">
             <Text className="font-interbold  text-xl mb-4 text-gray-900">
               Recommendations
             </Text>
-            {projectsList && projectsList.length > 2 && (
-              <TouchableOpacity onPress={handleProject} className="">
-                <Text className="font-inter">View all</Text>
-              </TouchableOpacity>
-            )}
+            {/* FIX: Use separate handler for recommendations */}
+            <TouchableOpacity onPress={handleViewAllRecommendations} className="">
+              <Text className="font-inter">View all</Text>
+            </TouchableOpacity>
           </View>
-          <Text className="px-2 font-inter">
+          <Text className="px-2 font-inter mb-4">
             Based on your Lagos Searches
           </Text>
           <View>
@@ -176,4 +197,3 @@ const ClientHome = ({ navigation }: any) => {
 };
 
 export default ClientHome;
-
