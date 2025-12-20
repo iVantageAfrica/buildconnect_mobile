@@ -43,15 +43,24 @@ export const useBids = () => {
   });
 
 
-  const projectsQuery = ( params: object) => {
+  const getContractorsQuery = () => {
   return useQuery({
-    queryKey: ['getprojectquery',  params], 
-    queryFn: () => ProjectService.getProjects(params),
+    queryKey: ['getContractors'], 
+    queryFn: () => BidService.getContractors(),
   });
 };
+
+ const getClientsBidsQuery = (id :any, params:any) => {
+    return useQuery({
+      queryKey: ['getClientsBids', id], 
+      queryFn: () => BidService.clientBids(id, params),
+    });
+  };
   
   return {
   submitBidMutation,
   submitBidSuccess,
+  getContractorsQuery,
+  getClientsBidsQuery 
   };
 };

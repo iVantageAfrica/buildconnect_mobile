@@ -3,6 +3,8 @@ import React from 'react'
 import { Check, Star } from 'lucide-react-native';
 import AppLayout from '@/src/components/Layouts/AppLayout';
 import GradientButton from '@/src/components/Buttons/GradientButton';
+import { useProjects } from '@/src/core/hooks/useProjects';
+import { useBids } from '@/src/core/hooks/UseBids';
 
 interface Contractor {
   name: string;
@@ -188,6 +190,12 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
 };
 
 const Inviteprofilescreen: React.FC<InviteProfileScreenProps> = ({ contractor = contractorData }) => {
+
+      
+    // const contractorList: Project[] = apiResponse?.data?.data?.projects || 
+    //                                 apiResponse?.data?.projects || 
+    //                                 apiResponse?.projects || 
+    //                                 [];
   return (
     <AppLayout screenName="Elite Builders">
       <View className="mx-4 my-6">

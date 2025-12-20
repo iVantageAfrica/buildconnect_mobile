@@ -35,6 +35,13 @@ export const useProjects = () => {
     });
   };
 
+   const getProjectMilestonesQuery = (id :any, params:any) => {
+      return useQuery({
+        queryKey: ['getClientsBids', id], 
+        queryFn: () => ProjectService.projectMilestone(id, params),
+      });
+    };
+
   //MUTATIONS
   const createProjectMutation = useMutation({
     mutationFn: ProjectService.createProject,
@@ -84,9 +91,10 @@ export const useProjects = () => {
   return {
     submitBidMutation,
     submitBidSuccess,
-    getAllProjectsQuery,
+   getAllProjectsQuery,
    projectsMarketPlaceQuery,
    singleProjectMarketPlaceQuery,
-   getSingleProjectQuery
+   getSingleProjectQuery,
+   getProjectMilestonesQuery
   };
 };
