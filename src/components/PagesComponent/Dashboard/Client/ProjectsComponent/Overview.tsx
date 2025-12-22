@@ -12,7 +12,7 @@ const Overview = (projectId:{projectId : string}) => {
     const { getSingleProjectQuery } = useProjects();
     const { data, isLoading, error } = getSingleProjectQuery(projectId.projectId);
     
-    // Fix the data extraction - based on your data structure
+
     const apiResponse = data?.data;
     const apiData = apiResponse?.data || apiResponse; 
     const projectData = apiData || {};
@@ -34,7 +34,7 @@ const Overview = (projectId:{projectId : string}) => {
         );
     }
     
-    // Show error state if there's an error
+   
     if (error) {
         return (
             <View className="flex-1 justify-center items-center p-4">
@@ -100,6 +100,6 @@ const Overview = (projectId:{projectId : string}) => {
             )}
         </View>
     )
-}
+        }
 
 export default Overview

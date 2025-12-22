@@ -52,7 +52,7 @@ const ClientProjectsScreen = () => {
 
   const statusFilters = getStatusFilterCounts();
 
-  // Handle status filter selection - similar to FindprojectsScreen
+
   const handleStatusFilter = (status: string) => {
     setSelectedFilter(status);
     
@@ -71,21 +71,20 @@ const ClientProjectsScreen = () => {
     setQueryParams(newParams);
   };
 
-  // Filter projects based on selected filter
+
   const getFilteredProjects = () => {
-    // If using API filtering via queryParams, return all projects
-    // The API should already be filtering based on queryParams.status
+ 
     if (selectedFilter === 'all') {
       return projectsList;
     }
     
-    // Fallback client-side filtering if API doesn't support it
+
     return projectsList.filter(project => project.status === selectedFilter);
   };
 
   const filteredProjects = getFilteredProjects();
 
-  // Format status for display
+
   const formatStatusLabel = (status: string) => {
     const statusMap: Record<string, string> = {
       'draft': 'Draft',
@@ -110,7 +109,7 @@ const ClientProjectsScreen = () => {
   return (
     <AppLayout screenName={"Projects"}>
       <View className="mt-8 flex-1">
-        {/* Filter Tabs - Similar to FindprojectsScreen */}
+   
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -139,7 +138,7 @@ const ClientProjectsScreen = () => {
         
        
 
-        {/* Projects List */}
+       
         {isLoadingProjects ? (
           <View className="flex-1 justify-center items-center py-20">
             <ActivityIndicator size="large" color="#2463EB" />

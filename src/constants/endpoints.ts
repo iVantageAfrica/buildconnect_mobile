@@ -34,6 +34,9 @@ export const ENDPOINTS = {
       PROJECTS:"/projects",
     MARKETPLACE:"/marketplace"
   },
+  CONTRACTORS: {
+    GET_CONTRACTOR: "/contractors",
+  },
     BID:{
     BIDS:"/bids/"
   }

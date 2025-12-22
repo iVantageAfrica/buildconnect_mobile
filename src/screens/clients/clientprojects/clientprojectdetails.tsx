@@ -1,6 +1,7 @@
 
 import AppLayout from '@/src/components/Layouts/AppLayout'
 import Bids from '@/src/components/PagesComponent/Dashboard/Client/ProjectsComponent/Bids'
+import Milestone from '@/src/components/PagesComponent/Dashboard/Client/ProjectsComponent/Milestone'
 import Overview from '@/src/components/PagesComponent/Dashboard/Client/ProjectsComponent/Overview'
 import { useRoute } from '@react-navigation/native'
 import React, { useState } from 'react'
@@ -14,8 +15,8 @@ const ClientProjectDetails = () => {
     console.log("projectid" , projectId)
   const tabs = [
     { name: 'Overview', component:<Overview projectId = {projectId}/> },
-    { name: 'Bids', component: <Bids/>},
-    { name: 'Milestones', component: <Text>Malam</Text> },
+    { name: 'Bids', component: <Bids projectId={projectId}/>},
+    { name: 'Milestones', component: <Milestone projectId={projectId}/>},
     { name: 'Media', component: <Text>Yaya</Text> },
   ]
 
