@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import {
   AppleImage,
   BuildConnectImage,
@@ -21,6 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import colors from "@/src/constants/colors";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/src/navigation/RootNavigator";
+import PhoneFormInput from "@/src/components/Forms/PhoneNumberInput";
 
 type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, "SignUp">;
 
@@ -47,11 +48,20 @@ const SignUpScreen = ({ navigation, route }: SignUpScreenProps) => {
       role: selectedRole.trim().toLowerCase() === "client" ? "client" : "builder",
     },
   });
-
+  
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [formattedPhoneNumber, setFormattedPhoneNumber] = useState<string>('');
   const { registerMutation } = useAuth();
 
   const onSubmit = (data: SignUpInput) => {
-    registerMutation.mutate(data, {
+    const submitData = {
+      ...data,
+      mobileNumber: formattedPhoneNumber || data.mobileNumber,
+    };
+    
+    console.log('📱 Final submission data:', submitData);
+    
+    registerMutation.mutate(submitData, {
       onSuccess: () => {
         navigation.replace("VerifyEmail", { 
           email: data.email, 
@@ -111,9 +121,7 @@ const SignUpScreen = ({ navigation, route }: SignUpScreenProps) => {
           <DividerWithText text="or" />
         </View>
 
- 
         <View className="space-y-4">
- 
           <View className="flex-row gap-4">
             <View className="flex-1">
               <Controller
@@ -180,18 +188,23 @@ const SignUpScreen = ({ navigation, route }: SignUpScreenProps) => {
               </Text>
             )}
           </View>
+
           <View>
             <Controller
               control={control}
               name="mobileNumber"
               render={({ field }) => (
-                <FormInput
-                  placeholder="070**********"
+                <PhoneFormInput
+                  placeholder="Enter phone number"
                   label="Mobile Number"
                   value={field.value}
-                  hasError={!!errors.mobileNumber}
+                  selectedCountry={selectedCountry}
+                  onChangeCountry={setSelectedCountry}
                   onChangeText={field.onChange}
-                  keyboardType="numeric"
+                  onChangeFormattedText={setFormattedPhoneNumber}
+                  hasError={!!errors.mobileNumber}
+                  onBlur={field.onBlur}
+                  defaultCountry="NG"
                 />
               )}
             />

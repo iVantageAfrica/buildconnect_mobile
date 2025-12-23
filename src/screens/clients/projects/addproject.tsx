@@ -40,7 +40,7 @@ const AddProject = () => {
     id: item.id,
   })) || [];
 
-  // Fetch project types from API - store full items with IDs
+
   const { data: projectTypesResponse, isLoading: isLoadingProjectTypes } = useQuery({
     queryKey: ["projectTypes"],
     queryFn: async () => {
@@ -94,14 +94,14 @@ const AddProject = () => {
       // STEP 1: Upload project media file first (if provided) and get the file ID
       let mediaFileId: string | null = null;
       if (data.projectMedia) {
-        // Convert ImageUploadComponent format to FileUploadResult format
+     
         let fileData: FileUploadResult;
         
         if ('size' in data.projectMedia && 'name' in data.projectMedia) {
-          // Already in correct format
+       
           fileData = data.projectMedia as FileUploadResult;
         } else {
-          // Get file size and name from URI
+          
           const response = await fetch(data.projectMedia.uri);
           const blob = await response.blob();
           const fileName = data.projectMedia.uri.split('/').pop() || 'image.jpg';
@@ -172,12 +172,12 @@ const AddProject = () => {
           completionDate: formatDate(milestone.completionDate),
           amount: milestone.paymentAmount,
         })),
-        mediaFileIds: mediaFileId ? [mediaFileId] : [], // Use the file ID from upload
+        mediaFileIds: mediaFileId ? [mediaFileId] : [], 
         fileIds: [],
         metadata: {},
       };
 
-      // Submit project creation with the file ID
+    
       submitBidMutation.mutate(apiPayload);
     } catch (error: any) {
       setIsUploading(false);
@@ -190,16 +190,20 @@ const AddProject = () => {
   };
 
 
-  if (submitBidSuccess) {
-    return (
-      <SuccessScreen
-        title="Project Posted Successfully"
-        message={`Your project has been posted. Builders will start submitting bids soon`} 
-        navigateTo="SignIn"
-        buttonTitle="View my Projects" 
-      />
-    );
-  }
+ if (submitBidSuccess) {
+  return (
+    <SuccessScreen
+  title="Project Posted Successfully"
+  message="Your project has been posted. Builders will start submitting bids soon"
+  buttonTitle="View my Projects"
+  navigateTo={{
+    route: 'Dashboard',
+    screen: 'Projects',
+    params: { refresh: true }
+  }}
+/>
+  );
+}
 
   return (
     <AppLayout screenName="Add Project"> 
@@ -341,19 +345,7 @@ const AddProject = () => {
         <View className="mt-4 mx-2">
           <View className="flex-row justify-between items-center mb-4">
             <Text className="font-worksanssemibold text-xl">Milestones</Text>
-            <TouchableOpacity
-              onPress={() =>
-                append({
-                  milestoneName: "",
-                  completionDate: "",
-                  paymentAmount: 0,
-                })
-              }
-              className="flex-row gap-2 items-center"
-            >
-              <Plus size={20} color="#2563eb" />
-              <Text className="text-blue-600 font-inter">Add milestone</Text>
-            </TouchableOpacity>
+    
           </View>
 
           {fields.map((field, index) => (
@@ -387,8 +379,8 @@ const AddProject = () => {
                   </Text>
                 )}
               </View>
-
-              <View className="pt-3">
+         <View className="flex-row gap-2 justify-between">
+              <View className="pt-7 flex-1">
                 <Controller
                   control={control}
                   name={`milestones.${index}.completionDate`}
@@ -404,18 +396,19 @@ const AddProject = () => {
                 />
               </View>
 
-              <View className="pt-3">
+              <View className="pt-3 flex-1">
                 <Controller
                   control={control}
                   name={`milestones.${index}.paymentAmount`}
                   render={({ field }) => (
                     <FormInput
                       placeholder="Enter amount"
-                      label="Payment Amount"
+                      label="Amount"
                       value={String(field.value)}
                       hasError={!!errors.milestones?.[index]?.paymentAmount}
                       onChangeText={(text) => field.onChange(Number(text))}
                       keyboardType="numeric"
+                       formatNumber={true}
                     />
                   )}
                 />
@@ -426,9 +419,22 @@ const AddProject = () => {
                 )}
               </View>
             </View>
+             </View>
           ))}
         </View>
-
+   <TouchableOpacity
+              onPress={() =>
+                append({
+                  milestoneName: "",
+                  completionDate: "",
+                  paymentAmount: 0,
+                })
+              }
+              className="flex-row gap-2 justify-end"
+            >
+              <Plus size={20} color="#2563eb" />
+              <Text className="text-blue-600 font-inter">Add milestone</Text>
+            </TouchableOpacity>
         <View>
           <Controller
             control={control}
