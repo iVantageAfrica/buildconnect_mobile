@@ -103,7 +103,7 @@ axiosInstance.interceptors.request.use(
     if (tokenString) {
       try {
         const parsedToken = JSON.parse(tokenString);
-        // Handle both formats: direct token string or object with token property
+      
         const authToken = typeof parsedToken === 'string' ? parsedToken : parsedToken?.token || parsedToken;
         if (authToken) {
           config.headers.Authorization = `Bearer ${authToken}`;
