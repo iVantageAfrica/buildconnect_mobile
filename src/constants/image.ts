@@ -17,6 +17,7 @@ import PropertyImage from "../assets/images/property-image.png";
 import QuestionImage from "../assets/images/Mask group.png";
 import SampleImage from "../assets/images/building-sample1.png"
 import SampleImage21 from "../assets/images/sample21.png";
+import BlueEscowBackground from "../assets/images/blue-escrow.png"
 
 export {
     SplashImage,
@@ -37,7 +38,8 @@ export {
     PropertyImage,
     QuestionImage,
     SampleImage,
-    SampleImage21
+    SampleImage21,
+    BlueEscowBackground
 }
 
 

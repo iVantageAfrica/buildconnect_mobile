@@ -53,15 +53,22 @@ export const userSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters long"),
   mobileNumber: z
     .string()
-    .min(10, "Mobile number must be at least 10 digits")
-    .max(15, "Mobile number must not exceed 15 digits"),
+    .min(1, "Phone number is required")
+    .refine(
+      (value) => {
+        const cleanedNumber = value.replace(/[\s\-\(\)\+]/g, '');
+        return /^[0-9]+$/.test(cleanedNumber) && cleanedNumber.length >= 7 && cleanedNumber.length <= 15;
+      },
+      {
+        message: "Please enter a valid phone number (7-15 digits)",
+      }
+    ),
   termsAccepted: z
     .boolean()
     .refine((val) => val === true, {
       message: "You must agree to the Terms and Privacy Policy",
     }),
 });
-
 
 const fileSchema = z
   .object({

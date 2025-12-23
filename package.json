@@ -61,7 +61,9 @@
     "react-native-element-dropdown": "^2.12.4",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-get-random-values": "^1.11.0",
+    "react-native-international-phone-number": "^0.11.4",
     "react-native-linear-gradient": "^2.8.3",
+    "react-native-phone-number-input": "^2.1.0",
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
@@ -89,7 +91,11 @@
   "expo": {
     "doctor": {
       "reactNativeDirectoryCheck": {
-        "exclude": ["install", "prettier-plugin-tailwindcss", "react-native-app-intro-slider"],
+        "exclude": [
+          "install",
+          "prettier-plugin-tailwindcss",
+          "react-native-app-intro-slider"
+        ],
         "listUnknownPackages": false
       }
     }

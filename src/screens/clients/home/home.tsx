@@ -49,8 +49,8 @@ const ClientHome = ({ navigation }: any) => {
   };
 
   const handleEscrowAccount = () => {
-    // Navigate to escrow account screen
-    navigation.navigate("EscrowAccount"); // Make sure this screen exists
+
+    navigation.navigate("EscrowAccount"); 
   };
 
   const handleSupport = () => {

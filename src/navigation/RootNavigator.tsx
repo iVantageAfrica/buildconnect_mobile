@@ -39,6 +39,9 @@ import Proposalscreen from '../screens/clients/proposalscreen/proposalscreen';
 import contractscreen from '../screens/clients/contractscreen/contractscreen';
 import Revisionscreen from '../screens/clients/revisionscreen/revisionscreen';
 import ClientContractdetailsScreen from '../screens/clients/contractscreen/contractscreen';
+import EscrowAccount from '../screens/clients/escrow/escrowaccount';
+import EscrowLinkProject from '../screens/clients/escrow/escrowlinkproject';
+import EscrowHistoryReciept from '../screens/clients/escrow/escrowhistoryreciept';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -74,6 +77,9 @@ export type RootStackParamList = {
  ClosedProjects:undefined;
  CompareBidsScreen:undefined;
  RevisionBidsScreen:undefined;
+  EscrowAccount:undefined;
+  EscrowLinkProject:undefined;
+  EscrowHistoryReciept:undefined;
  InviteProfileScreen: {
     contractorId: string; 
   };
@@ -154,6 +160,10 @@ export default function RootNavigator() {
           <Stack.Screen name="ProposalScreen" component={Proposalscreen}/>
           <Stack.Screen name="ClientContractdetailsScreen" component={ClientContractdetailsScreen}/>
           <Stack.Screen name="RevisionScreen" component={Revisionscreen}/>
+          <Stack.Screen name="EscrowAccount" component={EscrowAccount}/>
+          <Stack.Screen name="EscrowLinkProject" component={EscrowLinkProject}/>
+          <Stack.Screen name="EscrowHistoryReciept" component={EscrowHistoryReciept}/>
+      
         </>
       )}
     </Stack.Navigator>
