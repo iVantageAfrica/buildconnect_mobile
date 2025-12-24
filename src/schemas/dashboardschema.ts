@@ -155,6 +155,16 @@ export const ratingSchema = z.object({
   
 });
 
+
+export const linkMortgageSchema = z.object({
+  projectId: z.string().min(1, "Please select a project"),
+  accountNumber: z.string().min(1, "Account number is required"),
+  bankName: z.string().min(1, "Bank name is required"),
+  amountAllocated: z.string().optional(),
+  document: z.any().nullable().optional(),
+});
+
+export type LinkMortgageInput = z.infer<typeof linkMortgageSchema>;
 export type SubmitBidInput = z.infer<typeof submitBidSchema>;
 export type RatingInput = z.infer<typeof ratingSchema>;
 export type AddProjectInput = z.infer<typeof addProjectSchema>;

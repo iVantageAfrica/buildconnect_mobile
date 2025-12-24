@@ -13,7 +13,7 @@ const ClientProjectsScreen = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>('all');
   const [queryParams, setQueryParams] = useState<ProjectQueryParams>({
     page: 1,
-    limit: 10,
+    limit: 100,
     includeProgress: true
   });
 

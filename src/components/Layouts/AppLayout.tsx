@@ -6,24 +6,36 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@/src/navigation/RootNavigator';
 import colors from '@/src/constants/colors';
 
-
 interface AppLayoutProps {
   screenName: string;
   children: ReactNode;
+  navigateTo?: keyof RootStackParamList; // Optional: specify where to navigate
 }
 
-const AppLayout: React.FC<AppLayoutProps> = ({  screenName, children}) => {
-   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+const AppLayout: React.FC<AppLayoutProps> = ({ screenName, children, navigateTo }) => {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  
   const handleBack = () => {
-    navigation.navigate("Dashboard");
+    if (navigateTo) {
+      // If a specific route is provided, navigate to it
+      navigation.navigate(navigateTo);
+    } else {
+      // Default: go back to previous screen
+      if (navigation.canGoBack()) {
+        navigation.goBack();
+      } else {
+        // Fallback to Dashboard if there's no history
+        navigation.navigate("Dashboard");
+      }
+    }
   };
 
   return (
-      <View className="flex-1 ">
-        <View 
-          className="z-10 border-b border-gray-300 py-6 px-2"
-          style={{ backgroundColor: colors.background_light }}
-        >
+    <View className="flex-1">
+      <View 
+        className="z-10 border-b border-gray-300 py-6 px-2"
+        style={{ backgroundColor: colors.background_light }}
+      >
         <View className="flex-row items-center justify-center relative">
           <TouchableOpacity onPress={handleBack} className="absolute left-2">
             <Image
@@ -37,15 +49,13 @@ const AppLayout: React.FC<AppLayoutProps> = ({  screenName, children}) => {
         </View>
       </View>
 
-   
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 40 }}
       >
-      {children}
+        {children}
       </ScrollView>
-      </View>
-
+    </View>
   );
 };
 
