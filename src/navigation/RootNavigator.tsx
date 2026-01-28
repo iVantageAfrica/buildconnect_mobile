@@ -42,6 +42,7 @@ import ClientContractdetailsScreen from '../screens/clients/contractscreen/contr
 import EscrowAccount from '../screens/clients/escrow/escrowaccount';
 import EscrowLinkProject from '../screens/clients/escrow/escrowlinkproject';
 import EscrowHistoryReciept from '../screens/clients/escrow/escrowhistoryreciept';
+import BuildersScreen from '../screens/clients/builders/builders';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -90,6 +91,9 @@ export type RootStackParamList = {
     bidId: string; 
   };
   ClientContractdetailsScreen:undefined;
+  ListBuildersScreen:{
+    projectId: string; 
+  };
   RevisionScreen:undefined;
 };
 
@@ -162,6 +166,7 @@ export default function RootNavigator() {
           <Stack.Screen name="RevisionScreen" component={Revisionscreen}/>
           <Stack.Screen name="EscrowAccount" component={EscrowAccount}/>
           <Stack.Screen name="EscrowLinkProject" component={EscrowLinkProject}/>
+            <Stack.Screen name="ListBuildersScreen" component={BuildersScreen}/>
           <Stack.Screen name="EscrowHistoryReciept" component={EscrowHistoryReciept}/>
       
         </>

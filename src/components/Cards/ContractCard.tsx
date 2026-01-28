@@ -4,7 +4,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Star } from "lucide-react-native";
 import { TouchableOpacity, View, Text, Image } from "react-native";
 
-// Define the contractor type
+
 interface Contractor {
   image: string;
   name: string;
@@ -29,7 +29,7 @@ const Invitetobids = () => {
 };
 
   return (
-    <View className="rounded-3xl py-4 flex flex-col items-center w-64 border border-gray-300 mx-2">
+   <TouchableOpacity onPress={Invitetobids} className="rounded-3xl py-4 flex flex-col items-center w-[185px] m-4 border border-gray-300 mx-2">
       <Image 
         source={{ uri: contractor.image }}
         className="w-32 h-32 rounded-full mb-4"
@@ -57,6 +57,6 @@ const Invitetobids = () => {
           Invite to Bid
         </Text>
       </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   );
 };
