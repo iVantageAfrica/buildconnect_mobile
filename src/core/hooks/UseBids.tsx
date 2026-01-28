@@ -56,11 +56,17 @@ export const useBids = () => {
       queryFn: () => BidService.clientBids(id, params),
     });
   };
-  
+   const singleContractorQuery = (id :any) => {
+      return useQuery({
+        queryKey: ['singleContractor', id], 
+        queryFn: () => BidService.singleContractor(id),
+      });
+    };
   return {
   submitBidMutation,
   submitBidSuccess,
   getContractorsQuery,
-  getClientsBidsQuery 
+  getClientsBidsQuery,
+  singleContractorQuery
   };
 };

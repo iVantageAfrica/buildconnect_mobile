@@ -5,6 +5,7 @@ import AuthHeader from "@/src/components/Miscallaneous/PageHeader";
 import GradientButton from "@/src/components/Buttons/GradientButton";
 import { useNavigation } from "@react-navigation/native";
 import { Clipboard } from "react-native";
+import AppLayout from "@/src/components/Layouts/AppLayout";
 
 interface FAQItem {
   id: string;
@@ -57,15 +58,15 @@ const SupportScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
-      <View className="flex-1 bg-white">
-        <AuthHeader title="Help & Support" />
 
+    <AppLayout screenName="Help/Support">
+        <View className="flex-1 bg-white">
+     
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 40 }}
         >
-          {/* FAQ/Help Center Section */}
+        
           <View className="px-4 pt-6">
             <Text className="font-interbold text-lg mb-4 text-gray-900">
               FAQ/Help Center
@@ -146,7 +147,9 @@ const SupportScreen = () => {
           </View>
         </ScrollView>
       </View>
-    </SafeAreaView>
+    </AppLayout>
+    
+
   );
 };
 

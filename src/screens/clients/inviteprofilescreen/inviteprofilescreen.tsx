@@ -5,6 +5,8 @@ import AppLayout from '@/src/components/Layouts/AppLayout';
 import GradientButton from '@/src/components/Buttons/GradientButton';
 import { useProjects } from '@/src/core/hooks/useProjects';
 import { useBids } from '@/src/core/hooks/UseBids';
+import { useRoute } from "@react-navigation/native";
+import { ka } from 'zod/v4/locales';
 
 interface Contractor {
   name: string;
@@ -46,6 +48,8 @@ interface TestimonialCardProps {
 interface InviteProfileScreenProps {
   contractor?: Contractor;
 }
+ 
+
 
 
 //Mock data
@@ -192,10 +196,12 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
 const Inviteprofilescreen: React.FC<InviteProfileScreenProps> = ({ contractor = contractorData }) => {
 
       
-    // const contractorList: Project[] = apiResponse?.data?.data?.projects || 
-    //                                 apiResponse?.data?.projects || 
-    //                                 apiResponse?.projects || 
-    //                                 [];
+     const route = useRoute();
+  const { contractorId } = route.params as { contractorId: string };
+const {singleContractorQuery} = useBids();
+
+const {data, isLoading} = singleContractorQuery(contractorId);
+console.log(data)
   return (
     <AppLayout screenName="Elite Builders">
       <View className="mx-4 my-6">
